@@ -1,0 +1,5 @@
+[0m[[0m[33mwarn[0m] [0m[0m/home/arthur/Projects/Lge_Proc_Lab/Lab06/src/amyc/codegen/CodeGen.scala:65:12: match may not be exhaustive.[0m
+[0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: None[0m
+[0m[[0m[33mwarn[0m] [0m[0m        			constrSig match {[0m
+[0m[[0m[33mwarn[0m] [0m[0m        			^[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m

@@ -1,0 +1,9 @@
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
+[0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestEmptyObject[0m started[0m
+[0m[[0m[31merror[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[31mtestEmptyObject[0m failed: [0m
+[0m[[0m[31merror[0m] [0m[0m  Nonzero code returned from nodejs[0m
+[0m[[0m[31merror[0m] [0m[0m, took 0.074 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestEmptyObject[0m finished, took 0.074 sec[0m
+[0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestMinimalError[0m started[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestMinimalError[0m finished, took 0.064 sec[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[31m1 failed[0m[34m, [0m[34m0 ignored[0m[34m, 2 total, 0.142s[0m[0m

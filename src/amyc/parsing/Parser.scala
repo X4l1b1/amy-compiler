@@ -73,7 +73,9 @@ object Parser extends Pipeline[Stream[Token], Program] {
     'Type ::= INT() | STRING() | BOOLEAN() | UNIT() | 'QName,
     'QName ::= 'Id ~ 'QNameSt,
   'QNameSt ::= epsilon() | DOT() ~ 'Id,
-  'Expr   ::= 'E2 ~ 'E1Hlpr | VAL() ~ 'Param ~ EQSIGN() ~ 'E2 ~ SEMICOLON() ~ 'E2, 
+  'Expr   ::= 'E2 ~ 'E1Hlpr | VAL() ~ 'Param ~ EQSIGN() ~ 'E2 ~ SEMICOLON() ~ 'E2 |
+              VAR() ~ 'Param ~ EQSIGN() ~ 'E2 ~ SEMICOLON() ~ 'Expr | // Var declaration
+              'Id ~ EQSIGN() ~ 'E2 ~ SEMICOLON() ~ 'Expr,    // Var assignation NOT SURE ABOUT THAT  Maybe it needs specific "=" token 
   'E2   ::= 'E3 ~ 'E2Hlpr,
   'E3   ::= 'E4 ~ 'E3Hlpr,
   'E4   ::= 'E5 ~ 'E4Hlpr,
@@ -92,7 +94,9 @@ object Parser extends Pipeline[Stream[Token], Program] {
   'E9   ::= BANG() ~ 'E10 | MINUS() ~ 'E10 | 'E10,
   'E10  ::= 'Id ~ 'QNameHlpr | 'LiteralHlpr | LPAREN() ~ 'ParenHlpr | 
         ERROR() ~ LPAREN() ~ 'Expr ~ RPAREN() |
-        IF() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'ElseHlpr,
+        IF() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'ElseHlpr |
+        'WhileExpr,
+  'WhileExpr ::= WHILE() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'Expr ~ RBRACE(),
   'QNameHlpr ::= 'QNameSt ~ LPAREN() ~ 'Args ~ RPAREN() | epsilon(),
   'ElseHlpr ::= epsilon() | ELSE() ~ LBRACE() ~ 'Expr ~ RBRACE(),
   'ParenHlpr ::= RPAREN() | 'Expr ~ RPAREN(),

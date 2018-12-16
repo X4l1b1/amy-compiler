@@ -77,7 +77,8 @@ object Parser extends Pipeline[Stream[Token], Program] {
 
     'Expr ::= 'ExprMatch ~ 'ExprH 
             | 'Id ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr // Update
-            | 'ExprV ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr,
+            | VAL() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr // Fix LL1 issue, but needs to be fixed as well
+            | VAR() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr,
     'ExprV ::= VAL() | VAR(), // Update
     'ExprH ::= epsilon() | SEMICOLON() ~ 'Expr,
 

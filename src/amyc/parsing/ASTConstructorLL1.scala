@@ -12,272 +12,205 @@ import Tokens._
 // override whatever has changed. You can look into ASTConstructor as an example.
 class ASTConstructorLL1 extends ASTConstructor {
 
-  // TODO: Override methods from ASTConstructor as needed
+  @Override
   override def constructQname(pTree: NodeOrLeaf[Token]): (QualifiedName, Positioned) = {
     pTree match {
-      case Node('QName ::= _, List(id, qnamest)) =>
-        val (notEmpty, name) = constructQnameSt(qnamest)
-        if(notEmpty){
-          val (module, pos) = constructName(id)
-          (QualifiedName(Some(module), name), pos)
-        }
-        else{
-          val (name, pos) = constructName(id)
-          (QualifiedName(None, name), pos)
-        }
+      case Node('QName ::= _, List(id, Node('QNameModule ::= _, List()))) =>
+        val (name, pos) = constructName(id)
+        (QualifiedName(None, name), pos)
+      case Node('QName ::= _, List(id, Node('QNameModule ::= _, List(_, nm)))) =>
+        val (module, pos) = constructName(id)
+        val (name, _) = constructName(nm)
+        (QualifiedName(Some(module), name), pos)
     }
   }
 
-    def constructQnameSt(pTree: NodeOrLeaf[Token]): (Boolean, String) = {
-      pTree match {
-        case Node('QNameSt ::= _, List(_, id)) =>
-          val (name, pos) = constructName(id)
-          (true, name)
-        case _ =>
-          (false, null)
-        }
-    }
-
+  @Override
   override def constructExpr(pTree: NodeOrLeaf[Token]): Expr = {
     pTree match {
-      case Node('Expr ::= _, List(Leaf(vt), param, _, expr2, _, expr)) =>
-        Let(constructParam(param), constructE2(expr2), constructExpr(expr)).setPos(vt)
-      case Node('Expr ::= _, List(e2, e1hlpr)) =>
-        val (notEmpty, etail) = constructE1Hlpr(e1hlpr)
-        if(notEmpty){
-          val ehead = constructE2(e2)
-          Sequence(ehead, etail).setPos(ehead)
-        }
-        else{
-          constructE2(e2)
-        }
-      case p => constructE2(p)
-
-    }
-  }
-      def constructE1Hlpr(pTree: NodeOrLeaf[Token]): (Boolean, Expr) = {
-          pTree match {
-            case Node('E1Hlpr ::= _, List(_, expr)) =>
-              (true, constructExpr(expr))
-            case _ =>
-              (false, null)
-          }
-      }
-
-    def constructE2(pTree: NodeOrLeaf[Token]): Expr = {
-          pTree match {
-            case Node('E2 ::= _, List(e3, Node('E2Hlpr ::= _, List()))) =>
-              constructE3(e3)
-            case Node('E2 ::= _, List(e3, Node('E2Hlpr ::= _, List(_,_,cases,_)))) =>
-              val scrut = constructE3(e3)
-              Match(scrut, constructCases(cases)).setPos(scrut)
-            case others =>
-              constructE3(others)
-          }
-    }
-
-    def constructE3(pTree: NodeOrLeaf[Token]): Expr = {
-          pTree match {
-            case Node('E3 ::= _, List(e4, Node('E3Hlpr ::= _, List()))) =>
-              constructE4(e4)
-            case Node('E3 ::= _,List(e4, e3hlpr)) =>
-              val expr4 = constructE4(e4)
-              constructOpExpr(expr4, e3hlpr)
-            case others =>
-              constructE4(others)
-          }
-    }
-
-    def constructE4(pTree: NodeOrLeaf[Token]): Expr = {
-          pTree match {
-            case Node('E4 ::= _, List(e5, Node('E4Hlpr ::= _, List()))) =>
-              constructE5(e5)
-            case Node('E4 ::= _,List(e5, e4hlpr)) =>
-              val expr5 = constructE5(e5)
-              constructOpExpr(expr5, e4hlpr)
-            case others =>
-              constructE5(others)
-          }
-    }
-
-    def constructE5(pTree: NodeOrLeaf[Token]): Expr = {
-          pTree match {
-            case Node('E5 ::= _, List(e6, Node('E5Hlpr ::= _, List()))) =>
-              constructE6(e6)
-            case Node('E5 ::= _,List(e6, e5hlpr)) =>
-              val expr6 = constructE6(e6)
-              constructOpExpr(expr6, e5hlpr)
-            case others =>
-              constructE6(others)
-          }
-    }
-
-    def constructE6(pTree: NodeOrLeaf[Token]): Expr = {
-          pTree match {
-            case Node('E6 ::= _, List(e7, Node('E6Hlpr ::= _, List()))) =>
-              constructE7(e7)
-            case Node('E6 ::= _,List(e7, e6hlpr)) =>
-              val expr7 = constructE7(e7)
-              constructOpExpr(expr7, e6hlpr)
-            case others =>
-              constructE7(others)
-          }
-    }
-
-    def constructE7(pTree: NodeOrLeaf[Token]): Expr = {
-          pTree match {
-            case Node('E7 ::= _, List(e8, Node('E7Hlpr ::= _, List()))) =>
-              constructE8(e8)
-            case Node('E7 ::= _,List(e8, e7hlpr)) =>
-              val expr8 = constructE8(e8)
-              constructOpExpr(expr8, e7hlpr)
-            case others =>
-              constructE8(others)
-          }
-    }
-
-    def constructE8(pTree: NodeOrLeaf[Token]): Expr = {
-          pTree match {
-            case Node('E8 ::= _, List(e9, Node('E8Hlpr ::= _, List()))) =>
-              constructE9(e9)
-            case Node('E8 ::= _,List(e9, e8hlpr)) =>
-              val expr9 = constructE9(e9)
-              constructOpExpr(expr9, e8hlpr)
-            case others =>
-              constructE9(others)
-          }
-    }
-
-    def constructE9(pTree: NodeOrLeaf[Token]): Expr = {
-          pTree match {
-            case Node('E9 ::=  List(BANG(), _), List(Leaf(l), e10)) =>
-              Not(constructE10(e10)).setPos(l)
-            case Node('E9 ::=  List(MINUS(),_), List(Leaf(l), e10)) =>
-              Neg(constructE10(e10)).setPos(l)
-            case Node('E9 ::= _, List(e10)) =>
-              constructE10(e10)
-          }
-    }
-
-    def constructE10(pTree: NodeOrLeaf[Token]): Expr = {
-          pTree match {
-            case Node('E10 ::= List('Id, 'QNameHlpr), List(id, Node('QNameHlpr ::= _, List()))) =>
-              val (qname, pos) = constructName(id)
-              Variable(qname).setPos(pos)
-            case Node('E10 ::= List('Id, 'QNameHlpr), List(id, qnamehlpr)) =>
-              val (notEmpty, qid, qvals) = constructQNameHlpr(qnamehlpr)
-              if(notEmpty){
-                val (mod, pos) = constructName(id)
-                Call(QualifiedName(Some(mod), qid.get), qvals).setPos(pos)
-              }
-              else{
-                 val (name, pos) = constructName(id)
-                 Call(QualifiedName(None,name), qvals).setPos(pos)
-              }
-            case Node('E10 ::= List('LiteralHlpr), List(literals)) =>
-              constructLitteralHlpr(literals)
-            case Node('E10 ::= List(LPAREN(), _), List(Leaf(p@LPAREN()), parentHlpr)) =>
-              val (notEmpty, expr) = constructParenHlpr(parentHlpr)
-              if(notEmpty)
-                expr.setPos(p)
-              else
-                UnitLiteral()setPos(p)
-            case Node('E10 ::= (ERROR() :: _ ), List(Leaf(p), _, errmsg, _)) =>
-                Error(constructExpr(errmsg)).setPos(p)
-            case Node('E10 ::= (IF() :: _), List(Leaf(p), _, cond, _, _, tthen, _, _, _, eelse, _)) =>
-                Ite(
-                  constructExpr(cond),
-                  constructExpr(tthen),
-                  constructExpr(eelse)
-              ).setPos(p)
-              
-          }
-    }
-
-    override def constructPattern(pTree: NodeOrLeaf[Token]) : Pattern = {
-        pTree match {
-          case Node('Pattern ::= List(UNDERSCORE()), List(Leaf(ut))) =>
-            WildcardPattern().setPos(ut)
-          case Node('Pattern ::= List('Literal), List(lit)) =>
-            val literal = constructLiteral(lit)
-            LiteralPattern(literal).setPos(literal)
-          case Node('Pattern ::= List('Id, 'PaternSt), List(id, Node(_, List()))) =>
-            val (name, pos) = constructName(id)
-            IdPattern(name).setPos(pos) 
-          case Node('Pattern ::=  List('Id, 'PatternH), List(id, Node(_, List(Node(_, List(_, qnam)), _, patts, _)))) =>
-            val (mod, pos) = constructName(id)
-            val (name, _) = constructName(qnam)
-            val (qname, pos2) = (QualifiedName(Some(mod), name), pos)
-            CaseClassPattern(qname, constructList(patts, constructPattern, hasComma = true)).setPos(pos2)
-          case Node('Pattern ::=  List('Id, 'PatternH), List(id, Node(_, List(Node(_, List()), _, patts, _)))) =>
-            val (name, pos1) = constructName(id)
-            val (qname, pos) = (QualifiedName(None, name), pos1)
-            val patterns = constructList(patts, constructPattern, hasComma = true)
-            CaseClassPattern(qname, patterns).setPos(pos) 
-        }
-    }
-
-    def constructQNameHlpr(pTree: NodeOrLeaf[Token]) : (Boolean, Option[String], List[Expr]) = {
-          pTree match {
-            case Node('QNameHlpr ::= _, List(qnamest, _, args, _)) =>
-              val (notEmpty, name) = constructQnameSt(qnamest)
-              if(notEmpty)
-                (true, Some(name), constructList(args, constructExpr, hasComma = true))
-              else
-                (false, None, constructList(args, constructExpr, hasComma = true))
-            case _ =>
-              (false, null, null)
-
-          }
-    }
-
-    def constructCases(ptree: NodeOrLeaf[Token]): List[MatchCase] = {
-    ptree match {
-      case Node(_ ::= List('Case, 'CaseSt), List(t, Node(_, List()))) => 
-        List(constructCase(t))
-      case Node(_ ::= List('Case, 'CaseSt), List(t, ts)) =>
-        constructCase(t) :: constructCaseSt(ts)
+      case Node('Expr ::= List('ExprMatch, 'ExprH), List(expMatch, Node('ExprH ::= _, List()))) =>
+        constructExprMatch(expMatch)
+      case Node('Expr ::= List('ExprMatch, 'ExprH), List(expMatch, Node('ExprH ::= _, List(_, exp)))) =>
+        val exprMatch = constructExprMatch(expMatch)
+        val expr = constructExpr(exp)
+        Sequence(exprMatch, expr)
+      case Node('Expr ::= (VAL() :: _), List(Leaf(vt), param, _, value, _, body)) =>
+        Let(constructParam(param), constructExprMatch(value), constructExpr(body)).setPos(vt)
+      case p => constructExprMatch(p)
     }
   }
 
-   def constructCaseSt(ptree: NodeOrLeaf[Token]): List[MatchCase] = {
-    ptree match {
-      case Node('CasesSt ::= ('Cases :: Nil), List(cases)) => constructCases(cases)
-      case Node('CasesSt ::= _, _) => Nil // epsilon case
+  // Helpers functions for Expr construction 
+  def constructExprMatch(pTree: NodeOrLeaf[Token]): Expr = {
+    pTree match {
+      case Node('ExprMatch ::= _, List(expOr, Node('ExprMatchH ::= _, List()))) =>
+        constructExprOr(expOr)
+      case Node('ExprMatch ::= _, List(expOr, Node('ExprMatchH ::= _, List(_, _, cases, _)))) =>
+        val scrut = constructExprOr(expOr)
+        Match(scrut, constructListMatch(cases, constructCase))
+      case p => constructExprOr(p)
     }
   }
 
-
-    def constructLitteralHlpr(pTree: NodeOrLeaf[Token]) : Literal[_] = {
-      pTree match {
-      case Node('LiteralHlpr ::= List(INTLITSENT), List(Leaf(p@INTLIT(i)))) =>
-        IntLiteral(i).setPos(p)
-      case Node('LiteralHlpr ::= List(STRINGLITSENT), List(Leaf(p@STRINGLIT(s)))) =>
-        StringLiteral(s).setPos(p)
-      case Node('LiteralHlpr ::= _, List(Leaf(p@TRUE()))) =>
-        BooleanLiteral(true).setPos(p)
-      case Node('LiteralHlpr ::= _, List(Leaf(p@FALSE()))) =>
-        BooleanLiteral(false).setPos(p)
-      }
+  def constructExprOr(pTree: NodeOrLeaf[Token]): Expr = {
+    pTree match {
+      case Node('ExprOr ::= _, List(expAnd, Node('ExprOrH ::= _, List()))) =>
+        constructExprAnd(expAnd)
+      case Node('ExprOr ::= _, List(expAnd, rightSide)) =>
+        val exprAnd = constructExprAnd(expAnd)
+        constructOpExpr(exprAnd, rightSide)
+      case p => constructExprAnd(p)
     }
+  }
 
-    def constructParenHlpr(pTree: NodeOrLeaf[Token]) : (Boolean, Expr) = {
-      pTree match {
-        case Node('ParenHlpr ::= List(RPAREN()), List(_)) =>
-        (false, null)
-      case Node('ParenHlpr ::= _, List(expr, _)) =>
-        (true, constructExpr(expr))
-      }
+  def constructExprAnd(pTree: NodeOrLeaf[Token]): Expr = {
+    pTree match {
+      case Node('ExprAnd ::= _, List(expEq, Node('ExprAndH ::= _, List()))) =>
+        constructExprEq(expEq)
+      case Node('ExprAnd ::= _, List(expEq, rightSide)) =>
+        val exprEq = constructExprEq(expEq)
+        constructOpExpr(exprEq, rightSide)
+      case p => constructExprEq(p)
     }
+  }
 
-    override def constructOp(ptree: NodeOrLeaf[Token]): (Expr, Expr) => Expr = {
+  def constructExprEq(pTree: NodeOrLeaf[Token]): Expr = {
+    pTree match {
+      case Node('ExprEq ::= _, List(expLess, Node('ExprEqH ::= _, List()))) =>
+        constructExprLess(expLess)
+      case Node('ExprEq ::= _, List(expLess, rightSide)) =>
+        val exprLess = constructExprLess(expLess)
+        constructOpExpr(exprLess, rightSide)
+      case p => constructExprLess(p)
+    }
+  }
+
+  def constructExprLess(pTree: NodeOrLeaf[Token]): Expr = {
+    pTree match {
+      case Node('ExprLess ::= _, List(expAddSub, Node('ExprLessH ::= _, List()))) =>
+        constructExprAddSub(expAddSub)
+      case Node('ExprLess ::= _, List(expAddSub, rightSide)) =>
+        val exprAddSub = constructExprAddSub(expAddSub)
+        constructOpExpr(exprAddSub, rightSide)
+      case p => constructExprAddSub(p)
+    }
+  }
+
+  def constructExprAddSub(pTree: NodeOrLeaf[Token]): Expr = {
+    pTree match {
+      case Node('ExprAddSub ::= _, List(expTimesDivMod, Node('ExprAddSubH ::= _, List()))) =>
+        constructExprTimesDivMod(expTimesDivMod)
+      case Node('ExprAddSub ::= _, List(expTimesDivMod, rightSide)) =>
+        val exprTimesDivMod = constructExprTimesDivMod(expTimesDivMod)
+        constructOpExpr(exprTimesDivMod, rightSide)
+      case p => constructExprTimesDivMod(p)
+    }
+  }
+
+  def constructExprTimesDivMod(pTree: NodeOrLeaf[Token]): Expr = {
+    pTree match {
+      case Node('ExprTimesDivMod ::= _, List(expUnary, Node('ExprTimesDivModH ::= _, List()))) =>
+        constructExprUnary(expUnary)
+      case Node('ExprTimesDivMod ::= _, List(expUnary, rightSide)) =>
+        val exprUnary = constructExprUnary(expUnary)
+        constructOpExpr(exprUnary, rightSide)
+      case p => constructExprUnary(p)
+    }
+  }
+
+  def constructExprUnary(pTree: NodeOrLeaf[Token]): Expr = {
+    pTree match {
+      case Node('ExprUnary ::= List(BANG(), _), List(Leaf(bt), expSpec)) =>
+        Not(constructExpr(expSpec)).setPos(bt)
+      case Node('ExprUnary ::= List(MINUS(), _), List(Leaf(mt), expSpec)) =>
+        Neg(constructExpr(expSpec)).setPos(mt)
+      case Node('ExprUnary ::= _, List(expSpec)) =>
+        constructExprSpec(expSpec)
+      case p => constructExprSpec(p)
+    }
+  }
+
+  def constructExprSpec(pTree: NodeOrLeaf[Token]): Expr = {
+    pTree match {
+      case Node('ExprSpec ::= List('Id, 'ExprCallH), List(id, Node('ExprCallH ::= _, List()))) =>
+        val (name, pos) = constructName(id)
+        Variable(name).setPos(pos)
+      case Node('ExprSpec ::= List('Id, 'ExprCallH), List(id, Node('ExprCallH ::= _, List(Node(_, List(_, qnm)), _, as, _)))) =>
+        val (module, pos1) = constructName(id)
+        val (name, _) = constructName(qnm)
+        val (qname, pos) = (QualifiedName(Some(module), name), pos1)
+        val args = constructList(as, constructExpr, hasComma = true)
+        Call(qname, args).setPos(pos)
+      case Node('ExprSpec ::= List('Id, 'ExprCallH), List(id, Node('ExprCallH ::= _, List(Node(_, List()), _, as, _)))) =>
+        val (name, pos1) = constructName(id)
+        val (qname, pos) = (QualifiedName(None, name), pos1)
+        val args = constructList(as, constructExpr, hasComma = true)
+        Call(qname, args).setPos(pos1)
+      case Node('ExprSpec ::= List('LiteralParen), List(lit)) =>
+        constructLiteralParen(lit)
+      case Node('ExprSpec ::= List(_, 'ExprParenH), List(Leaf(lparen), Node(_, List(_)))) =>
+        UnitLiteral().setPos(lparen)
+      case Node('ExprSpec ::= List(_, 'ExprParenH), List(Leaf(lparen), Node(_, List(expr, _)))) =>
+        constructExpr(expr).setPos(lparen)
+      case Node('ExprSpec ::= (ERROR() :: _), List(Leaf(ert), _, msg, _)) =>
+        Error(constructExpr(msg)).setPos(ert)
+      case Node('ExprSpec ::= (IF() :: _), List(Leaf(it), _, cond, _, _, thenn, _, _, _, elze, _)) =>
+        Ite(
+          constructExpr(cond),
+          constructExpr(thenn),
+          constructExpr(elze)
+        ).setPos(it)
+    }
+  }
+
+  @Override
+  override def constructPattern(pTree: NodeOrLeaf[Token]): Pattern = {
+    pTree match {
+      case Node('Pattern ::= List(UNDERSCORE()), List(Leaf(ut))) =>
+        WildcardPattern().setPos(ut)
+      case Node('Pattern ::= List('Literal), List(lit)) =>
+        val literal = constructLiteral(lit)
+        LiteralPattern(literal).setPos(literal)
+      case Node('Pattern ::= List('Id, 'PatternH), List(id, Node(_, List()))) =>
+        val (name, pos) = constructName(id)
+        IdPattern(name).setPos(pos)
+      case Node('Pattern ::=  List('Id, 'PatternH), List(id, Node(_, List(Node(_, List(_, qnm)), _, patts, _)))) =>
+        val (module, pos1) = constructName(id)
+        val (name, _) = constructName(qnm)
+        val (qname, pos) = (QualifiedName(Some(module), name), pos1)
+        val patterns = constructList(patts, constructPattern, hasComma = true)
+        CaseClassPattern(qname, patterns).setPos(pos)
+      case Node('Pattern ::=  List('Id, 'PatternH), List(id, Node(_, List(Node(_, List()), _, patts, _)))) =>
+        val (name, pos1) = constructName(id)
+        val (qname, pos) = (QualifiedName(None, name), pos1)
+        val patterns = constructList(patts, constructPattern, hasComma = true)
+        CaseClassPattern(qname, patterns).setPos(pos)
+
+    }
+  }
+
+  def constructLiteralParen(pTree: NodeOrLeaf[Token]): Literal[_] = {
+    pTree match {
+      case Node('LiteralParen ::= List(INTLITSENT), List(Leaf(it@INTLIT(i)))) =>
+        IntLiteral(i).setPos(it)
+      case Node('LiteralParen ::= List(STRINGLITSENT), List(Leaf(st@STRINGLIT(s)))) =>
+        StringLiteral(s).setPos(st)
+      case Node('LiteralParen ::= _, List(Leaf(tt@TRUE()))) =>
+        BooleanLiteral(true).setPos(tt)
+      case Node('LiteralParen ::= _, List(Leaf(tf@FALSE()))) =>
+        BooleanLiteral(false).setPos(tf)
+    }
+  }
+
+  def constructListMatch[A](ptree: NodeOrLeaf[Token], constructor: NodeOrLeaf[Token] => A, hasComma: Boolean = false): List[A] = {
     ptree match {
-      case Leaf(t) =>
-        tokenToExpr(t)
-      case Node(_, List(Leaf(t))) =>
-        tokenToExpr(t)
+      case Node(_ ::= List('Case, 'CasesH), List(t, Node(_, List()))) => 
+        List(constructor(t))
+      case Node(_ ::= List('Case, 'CasesH), List(t, ts)) =>
+        constructor(t) :: constructListMatch(ts, constructor, hasComma)
     }
-}
+  }
+
   // Important helper method:
   // Because LL1 grammar is not helpful in implementing left associativity,
   // we give you this method to reconstruct it.
@@ -292,7 +225,7 @@ class ASTConstructorLL1 extends ASTConstructor {
       case Node(_, List()) => //epsilon rule of the nonterminals
         leftopd
       case Node(sym ::= _, List(op, rightNode))
-        if Set('E3Hlpr, 'E4Hlpr, 'E5Hlpr, 'E6Hlpr, 'E7Hlpr, 'E8Hlpr) contains sym =>
+        if Set('ExprOrH, 'ExprAndH, 'ExprEqH, 'ExprLessH, 'ExprAddSubH, 'ExprTimesDivModH) contains sym =>
         rightNode match {
           case Node(_, List(nextOpd, suf)) => // 'Expr? ::= Expr? ~ 'OpExpr,
             val nextAtom = constructExpr(nextOpd)
@@ -301,5 +234,14 @@ class ASTConstructorLL1 extends ASTConstructor {
     }
   }
 
+  @Override
+  override def constructOp(ptree: NodeOrLeaf[Token]): (Expr, Expr) => Expr = {
+    ptree match {
+      case Leaf(t) =>
+        tokenToExpr(t)
+      case Node(_, List(Leaf(t))) =>
+        tokenToExpr(t)
+    }
+  }
 }
 

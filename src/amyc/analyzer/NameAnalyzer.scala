@@ -44,38 +44,52 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
           }
       }
     }
+    
+    // Helper method: will transform a nominal Literal Pattern type
+    // to the appropriate S.LiteralPattern subClass
+    def transformLiteral[T](lit : N.Literal[T]) = {
+        lit match {
+            case N.IntLiteral(x) => S.IntLiteral(x)
+            case N.BooleanLiteral(x) => S.BooleanLiteral(x)
+            case N.StringLiteral(x) => S.StringLiteral(x)
+            case N.UnitLiteral() => S.UnitLiteral()
+        }
+    }.setPos(lit)
+        
+
 
     // Step 2: Check name uniqueness of definitions in each module
-    val moduleDefs = p.modules.map(m => m.defs.groupBy(_.name))
-    moduleDefs.foreach(md => md.foreach{
-      case (name, defList) =>
-        if(defList.size > 1){
-           fatal(s"Two or more definitions named $name in  $moduleDefs.name", defList.head.position)
-        }
-    })
-
-    p.modules.foreach{
-      case N.ModuleDef(name, defs, _) =>
-        defs.foreach{
-          // Step 3: Discover types and add them to symbol table
-          case N.AbstractClassDef(classname) => table.addType(name, classname)
-          // Step 4: Discover type constructors, add them to table
-          case N.CaseClassDef(classname, fields, parentname) =>
-            table.getType(name, parentname) match {
-              case Some(parent) => 
-                val fieldsmap = fields.map(fld => transformType(fld, name))
-                table.addConstructor(name, classname, fieldsmap, parent)
-              case None =>
-                fatal(s"$defs not in $name", defs.head.position)
-            }
-        // Step 5: Discover functions signatures, add them to table
-          case N.FunDef(funcname, params, retType, body) =>
-            val paramMap = params.map(param => transformType(param.tt, name))
-            val rettype = transformType(retType, name)
-            table.addFunction(name, funcname, paramMap, rettype)
-          case _ =>
+    p.modules.foreach { case (module) =>
+        val defsNames = module.defs.groupBy(_.name)
+        defsNames.foreach { case (name, defs) =>
+          if (defs.size > 1) {
+            fatal(s"Two definitions named $name in the same module", defs.head.position)
+          }
         }
     }
+      
+    // Step 3: Discover types and add them to symbol table
+    // Step 4: Discover type constructors, add them to table
+    // Step 5: Discover functions signatures, add them to table
+    p.modules.foreach{ case (module) =>
+        module.defs.foreach{ case (definition) =>
+            val owner = module.name
+            definition match {
+                case N.AbstractClassDef(name) => 
+                    table.addType(owner, name)
+                case N.CaseClassDef(name, fields, parent) => 
+                    val argTypes = fields.map(x => transformType(x, owner))
+                    val parentOption = table.getType(owner, parent).getOrElse(
+                        fatal(s"Parent type Not Found in Case Class", definition.position))
+                    table.addConstructor(owner, name, argTypes, parentOption)
+                case N.FunDef(name, params, retType, _) => 
+                    val argTypes = params.map{x => transformType(x.tt, owner)}
+                    table.addFunction(owner, name, argTypes, transformType(retType, owner))
+            } 
+        } 
+    }
+
+  
 
     // Step 6: We now know all definitions in the program.
     //         Reconstruct modules and analyse function bodies/ expressions
@@ -86,25 +100,18 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
     // transformFunDef is given as an example, as well as some code for the other ones
 
     def transformDef(df: N.ClassOrFunDef, module: String): S.ClassOrFunDef = { df match {
-      case N.AbstractClassDef(name) =>
-        transformAbsstractClassDef(name, module)
-      case N.CaseClassDef(name, _, _) =>
-        transformCaseClassDef(name, module)
+      case p@N.AbstractClassDef(name) =>
+        val nameS = table.getType(module, name)
+            .getOrElse(fatal(s"Type $name not found"))
+        S.AbstractClassDef(nameS).setPos(p)
+      case p@N.CaseClassDef(name, _, _) =>
+        val (nameS, ConstrSig(argTypes, parent, _)) = table.getConstructor(module, name)
+            .getOrElse(fatal(s"Constructor $name in module $module not found"))
+        val argTypesS = argTypes.map(x => S.TypeTree(x))
+        S.CaseClassDef(nameS, argTypesS, parent).setPos(p)
       case fd: N.FunDef =>
         transformFunDef(fd, module)
     }}.setPos(df)
-
-    def transformAbsstractClassDef(name: N.Name, module: String): S.ClassOrFunDef = {
-      val id = table.getType(module, name).get
-      S.AbstractClassDef(id)
-    }
-
-    def transformCaseClassDef(name: N.Name, module: String): S.ClassOrFunDef = {
-      val (id, constrType) = table.getConstructor(module, name).get
-      val ConstrSig(argTypes, parent, _) = constrType
-      val sblArgs = argTypes.map(arg => S.TypeTree(arg))
-      S.CaseClassDef(id, sblArgs, parent)
-}
 
     def transformFunDef(fd: N.FunDef, module: String): S.FunDef = {
       val N.FunDef(name, params, retType, body) = fd
@@ -112,7 +119,7 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
 
       params.groupBy(_.name).foreach { case (name, ps) =>
         if (ps.size > 1) {
-          fatal(s"More than one parameters named $name in function ${fd.name}", fd)
+          fatal(s"Two parameters named $name in function ${fd.name}", fd)
         }
       }
 
@@ -140,133 +147,111 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
     def transformExpr(expr: N.Expr)
                      (implicit module: String, names: (Map[String, Identifier], Map[String, Identifier])): S.Expr = {
       val (params, locals) = names
-      val res = expr match {  
+      val res = expr match {
+        // Variables
+        case N.Variable(name: N.Name) =>
+          val nameS = locals.get(name)
+                        .getOrElse(params.get(name)
+                        .getOrElse(fatal(s"Undefined variable $name")))
+                      
+          S.Variable(nameS)
+          
+        // Literals
+        case N.IntLiteral(value: Int) => S.IntLiteral(value)
+        case N.BooleanLiteral(value: Boolean) => S.BooleanLiteral(value)
+        case N.StringLiteral(value: String) => S.StringLiteral(value)
+        case N.UnitLiteral() => S.UnitLiteral()
+
+        // Binary operators
+        case N.Plus(lhs: N.Expr, rhs: N.Expr) => S.Plus(transformExpr(lhs), transformExpr(rhs))
+        case N.Minus(lhs: N.Expr, rhs: N.Expr) => S.Minus(transformExpr(lhs), transformExpr(rhs))
+        case N.Times(lhs: N.Expr, rhs: N.Expr) => S.Times(transformExpr(lhs), transformExpr(rhs))
+        case N.Div(lhs: N.Expr, rhs: N.Expr) => S.Div(transformExpr(lhs), transformExpr(rhs))
+        case N.Mod(lhs: N.Expr, rhs: N.Expr) => S.Mod(transformExpr(lhs), transformExpr(rhs))
+        case N.LessThan(lhs: N.Expr, rhs: N.Expr) => S.LessThan(transformExpr(lhs), transformExpr(rhs))
+        case N.LessEquals(lhs: N.Expr, rhs: N.Expr) => S.LessEquals(transformExpr(lhs), transformExpr(rhs))
+        case N.And(lhs: N.Expr, rhs: N.Expr) => S.And(transformExpr(lhs), transformExpr(rhs))
+        case N.Or(lhs: N.Expr, rhs: N.Expr) => S.Or(transformExpr(lhs), transformExpr(rhs))
+        case N.Equals(lhs: N.Expr, rhs: N.Expr) => S.Equals(transformExpr(lhs), transformExpr(rhs))
+        case N.Concat(lhs: N.Expr, rhs: N.Expr) => S.Concat(transformExpr(lhs), transformExpr(rhs))
+ 
+        // Unary operators
+        case  N.Not(e: N.Expr) => S.Not(transformExpr(e))
+        case  N.Neg(e: N.Expr) => S.Neg(transformExpr(e))
+
+        // Function/ type constructor call
+        case N.Call(qname: N.QualifiedName, args: List[N.Expr]) => 
+          val moduleS = qname.module.getOrElse(module)
+          val argsS = args.map(x => transformExpr(x))
+          val (identifier, constrSig) = table.getConstructor(module, qname.name)
+                                        .getOrElse(table.getFunction(module, qname.name)
+                                        .getOrElse(fatal(s"Call to undefined function/constructor $module.$qname.name")))
+          if(constrSig.argTypes.size != args.size)
+            fatal(s"Wrong Number of arguments in $module.$qname.name")
+         
+          S.Call(identifier, argsS)
+          
+        // The ; operator
+        case N.Sequence(e1: N.Expr, e2: N.Expr) => S.Sequence(transformExpr(e1), transformExpr(e2))
+          
+        // Local variable definition
+        case N.Let(df: N.ParamDef, value: N.Expr, body: N.Expr) =>
+            if(locals.contains(df.name))
+                fatal(s"Local variable $df.name already defined")
+            val idName = Identifier.fresh(df.name)
+            val paramsDef = S.ParamDef(idName, S.TypeTree(transformType(df.tt, module)))
+            S.Let(paramsDef, transformExpr(value), transformExpr(body)(module, (params, locals + (df.name -> idName))))
+          
+        // If-then-else
+        case N.Ite(cond: N.Expr, thenn: N.Expr, elze: N.Expr) => S.Ite(transformExpr(cond), transformExpr(thenn), transformExpr(elze))
+          
+        // Pattern matching
         case N.Match(scrut, cases) =>
           // Returns a transformed pattern along with all bindings
           // from strings to unique identifiers for names bound in the pattern.
           // Also, calls 'fatal' if a new name violates the Amy naming rules.
           def transformPattern(pat: N.Pattern): (S.Pattern, List[(String, Identifier)]) = {
-            pat match {
-              case N.CaseClassPattern(constr, args) =>
-                val constrMod = constr.module.getOrElse(module)
-                val constrName = constr.name
-                val symConstr = table.getConstructor(constrMod, constrName) match {
-                  case Some((sbl, sig)) =>
-                    if(sig.argTypes.size != args.size)
-                      fatal(s"Wrong number of arguments in $constrMod.name", pat)
-                    else
-                      sbl
-                  case None =>
-                    fatal(s"Constructor not found :$constrMod.name")
-
-                }
-                val transfArgs = args.map(arg => transformPattern(arg))
-                val newPatt = transfArgs.map(arg => arg._1)
-                val newId = transfArgs.flatMap(arg => arg._2)
-
-                if(newId.map(_._1).distinct.size < newId.size)
-                      fatal(s"Multiple definitions for pattern :", pat)
-                  (S.CaseClassPattern(symConstr, newPatt).setPos(pat), newId)
-              case N.WildcardPattern() =>
-                    (S.WildcardPattern().setPos(pat),List())
-              case N.LiteralPattern(lit) =>
-                val retLit = lit match {
-                  case N.IntLiteral(value) => S.IntLiteral(value).setPos(lit)
-                  case N.BooleanLiteral(value) => S.BooleanLiteral(value).setPos(lit)
-                  case N.StringLiteral(value) => S.StringLiteral(value).setPos(lit)
-                  case N.UnitLiteral() => S.UnitLiteral().setPos(lit)
-                }
-                (S.LiteralPattern(retLit).setPos(pat), Nil)
-              case N.IdPattern(name) =>
-                val id = Identifier.fresh(name)
-                (S.IdPattern(id).setPos(pat), List((name, id)))
+            val ret = pat match {
+                case N.WildcardPattern() =>  // _
+                    (S.WildcardPattern(), Nil)
+                case N.IdPattern(name: N.Name) => // x
+                    val identifier = Identifier.fresh(name)
+                    if(locals.contains(name))
+                        fatal(s"$name already defined in the scope")
+                    (S.IdPattern(identifier), List((name, identifier)))
+                case N.LiteralPattern(lit) => // 42, true
+                    (S.LiteralPattern(transformLiteral(lit)), Nil)
+                case N.CaseClassPattern(constr: N.QualifiedName, args: List[N.Pattern]) => // C(arg1, arg2)
+                    val moduleS = constr.module.getOrElse(module)
+                    val argsS = args.map(x => transformPattern(x))
+                
+                    argsS.foreach{ e =>
+                        val names = e._2.map(args => args._1)
+                        names.foreach{name =>
+                            if(locals.contains(name))
+                                fatal(s"$name already defined in the scope")
+                        }   
+                    }
+                    val (identifier, constrSig) = table.getConstructor(module, constr.name)
+                                                .getOrElse(fatal(s"Call to undefined constructor $module.$constr.name"))
+                    if(constrSig.argTypes.size != args.size)
+                        fatal(s"Wrong Number of arguments in $constr.${constr.name}")
+                           
+                    (S.CaseClassPattern(identifier, argsS.map(_._1)), argsS.map(_._2).flatten)
             }
+            ret._1.setPos(pat)
+            ret
           }
 
           def transformCase(cse: N.MatchCase) = {
             val N.MatchCase(pat, rhs) = cse
             val (newPat, moreLocals) = transformPattern(pat)
-
-            moreLocals.foreach{ 
-              case (str, _) =>
-                if(locals.contains(str)) 
-                  fatal(s"Pattern identifier $str is already defined", pat)
-            }
-            val newloc = locals ++ moreLocals.toMap
-            S.MatchCase(newPat, transformExpr(rhs)(module, (params, newloc))).setPos(cse)
+            S.MatchCase(newPat, transformExpr(rhs)(module, (params, locals ++ moreLocals)))
           }
 
-            S.Match(transformExpr(scrut), cases.map(transformCase))
-
-          case N.Call(qname, args) =>
-            val callMod = qname.module.getOrElse(module)
-            val callName = qname.name
-            val csbl = table.getFunction(callMod, callName) match {
-              case Some((sbl, sig)) => {
-                if(sig.argTypes.size != args.size) fatal(s"Wrong number of arguments for function ${callName}")
-                else sbl
-              }
-              case None => {
-                table.getConstructor(callMod, callName) match {
-                  case Some((sbl, sig)) => {
-                    if(sig.argTypes.size != args.size) fatal(s"Wrong number of arguments for constructor ${callName}")
-                    else sbl
-                  }
-                  case None => fatal(s"$callName doesn't match with function or constructor in module ${callMod}")
-                }
-              }
-
-            }
-            val newArgs = args.map(arg => transformExpr(arg))
-            S.Call(csbl, newArgs)
-          case N.Sequence(e1, e2) => 
-            S.Sequence(transformExpr(e1), transformExpr(e2))
-          case N.Let(df, value, body) =>  
-            val s = Identifier.fresh(df.name)
-            val sTT = S.TypeTree(transformType(df.tt, module))
-            val parmDef = S.ParamDef(s, sTT)
-            val transVal = transformExpr(value)
-            if (locals.contains(df.name)) fatal(s"Variable redefinition of ${df.name}", df.position)
-            val newBody = transformExpr(body)(module, (params, locals + (df.name -> s)))
-            S.Let(parmDef, transVal, newBody)
-          case N.IntLiteral(value) => 
-            S.IntLiteral(value)
-          case N.BooleanLiteral(value) => 
-            S.BooleanLiteral(value)
-          case N.StringLiteral(value) => 
-            S.StringLiteral(value)
-          case N.UnitLiteral() => S.UnitLiteral()
-          case N.Not(e) => S.Not(transformExpr(e))
-          case N.Neg(e) => S.Neg(transformExpr(e))
-          case N.Ite(cond, tthen, eelse) => 
-            S.Ite(transformExpr(cond), transformExpr(tthen), transformExpr(eelse))
-          case N.Plus(lhs, rhs) => 
-            S.Plus(transformExpr(lhs), transformExpr(rhs))
-          case N.Minus(lhs, rhs) => 
-            S.Minus(transformExpr(lhs), transformExpr(rhs))
-          case N.Times(lhs, rhs) => 
-            S.Times(transformExpr(lhs), transformExpr(rhs))
-          case N.Div(lhs, rhs) => 
-            S.Div(transformExpr(lhs), transformExpr(rhs))
-          case N.Mod(lhs, rhs) => 
-            S.Mod(transformExpr(lhs), transformExpr(rhs))
-          case N.LessThan(lhs, rhs) => 
-            S.LessThan(transformExpr(lhs), transformExpr(rhs))
-          case N.LessEquals(lhs, rhs) => 
-            S.LessEquals(transformExpr(lhs), transformExpr(rhs))
-          case N.And(lhs, rhs) => 
-            S.And(transformExpr(lhs), transformExpr(rhs))
-          case N.Or(lhs, rhs) => 
-            S.Or(transformExpr(lhs), transformExpr(rhs))
-          case N.Equals(lhs, rhs) => 
-            S.Equals(transformExpr(lhs), transformExpr(rhs))
-          case N.Concat(lhs, rhs) => 
-            S.Concat(transformExpr(lhs), transformExpr(rhs))
-          case N.Error(msg) => S.Error(transformExpr(msg))
-          case N.Variable(name) =>
-            val identifier = locals.getOrElse(name, params.getOrElse(name, fatal(s"Variable $name does not exist", expr)))
-            S.Variable(identifier)
-
+          S.Match(transformExpr(scrut), cases.map(transformCase))
+          
+        case N.Error(msg: N.Expr) => S.Error(transformExpr(msg))
       }
       res.setPos(expr)
     }

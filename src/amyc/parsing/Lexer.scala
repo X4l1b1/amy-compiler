@@ -35,6 +35,29 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
     case _          => None
   }
 
+  /** Maps a character c to the corresponding Operator 
+    * or Delimiter, None if there is no match
+    */
+  private def oneCharacterTokens(c: Char) = c match {
+      /* Operators */
+      case ';' => Some(SEMICOLON())  // ;
+      case '-' => Some(MINUS())      // -
+      case '*' => Some(TIMES())      // *
+      case '/' => Some(DIV())        // /
+      case '%' => Some(MOD())        // %
+      case '!' => Some(BANG())       // !
+
+      /* Delimiters and wildcard */
+      case '{' => Some(LBRACE())     // {
+      case '}' => Some(RBRACE())     // }
+      case '(' => Some(LPAREN())     // (
+      case ')' => Some(RPAREN())     // )
+      case ',' => Some(COMMA())      // ,
+      case ':' => Some(COLON())      // :
+      case '.' => Some(DOT())        // .
+      case '_' => Some(UNDERSCORE()) // _
+      case _ => None
+  }
 
   private def lexFile(ctx: Context)(f: File): Stream[Token] = {
     import ctx.reporter._
@@ -71,27 +94,27 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
         nextToken(stream.dropWhile{ case (c, _) => Character.isWhitespace(c) } )
       } else if (currentChar == '/' && nextChar == '/') {
         // Single-line comment
-        // Ignore line by updating nextToken and doing nothing else
-        val nextLine = stream.dropWhile{ case (ch, _) => ch != EndOfFile && ch != '\n' }
-        nextToken(nextLine)
+        val newStream = stream.dropWhile{ case (c, _) => (c != '\n' && c != EndOfFile)}
+        if(newStream.head._1 == EndOfFile)
+          nextToken(newStream)
+        else 
+          nextToken(newStream.tail)
+        
       } else if (currentChar == '/' && nextChar == '*') {
         // Multi-line comment
-        // Drop multiple line until we find pattern "*/"
-        def keepDroping(checkSlash : Boolean, curStream : Stream[Input]) : Stream[Input] = {
-          curStream match {
-            case ('*',_) #:: rest => keepDroping(true, rest)
-            case ('/',_) #:: rest => 
-              if(checkSlash)
-                rest
-              else
-                keepDroping(false, rest)
-            case(EndOfFile,_) #:: rest => 
-              ctx.reporter.error("Invalid comment delimiters \n", currentPos)
-              curStream
-            case (_,_)#:: rest => keepDroping(false, rest)
+        def removeMultiLineComments(stream: Stream[Input]): Stream[Input] = {
+          val newStream = stream.dropWhile { case (c, _) => c != '*' && c != EndOfFile}
+          if (newStream.head._1 == EndOfFile){
+              ctx.reporter.error("Multi-line comment never closed !", currentPos)
+              newStream
           }
-        }
-        nextToken(keepDroping(false, stream.tail.tail))
+          else if (newStream.tail.head._1 == '/')
+            newStream.tail.tail
+          else 
+            removeMultiLineComments(newStream.tail)
+        }    
+
+        nextToken(removeMultiLineComments(stream.tail.tail)) 
       } else {
         readToken(stream)
       }
@@ -115,105 +138,95 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
 
       currentChar match {
         case `EndOfFile` => useOne(EOF())
+
         // Reserved word or Identifier
         case _ if Character.isLetter(currentChar) =>
           val (wordLetters, afterWord) = stream.span { case (ch, _) =>
             Character.isLetterOrDigit(ch) || ch == '_'
           }
           val word = wordLetters.map(_._1).mkString
-          // Hint: Decide if it's a letter or reserved word (use our infrastructure!),
-          // and return the correct token, along with the remaining input stream.
-          // Make sure you set the correct position for the token.
-          val keyword = keywords(word)
-          keywords(word) match {
-            case Some(t) =>
-              val token = keyword.get
-              (token.setPos(currentPos), afterWord)
 
-            case None => 
-              val id = ID(word)
-              (id.setPos(currentPos), afterWord)
+          keywords(word) match {
+            case Some(t) => (t.setPos(currentPos), afterWord)
+            case _ => (ID(word).setPos(currentPos), afterWord)
           }
+
         // Int literal
         case _ if Character.isDigit(currentChar) =>
-          // Hint: Use a strategy similar to the previous example.
-          // Make sure you fail for integers that do not fit 32 bits.
-          val (numChars, afterNum) = stream.span { case (ch, _) =>
-            Character.isDigit(ch) || ch == '_'
+          val (digitsWord, afterWord) = stream.span { case (ch, _) =>
+            Character.isDigit(ch)
           }
           try{
-              val num = numChars.map(_._1).mkString.toInt
-              (INTLIT(num).setPos(currentPos), afterNum)
+            val digits = digitsWord.map(_._1).mkString.toInt
+            (INTLIT(digits).setPos(currentPos), afterWord)
+          } catch {
+            case _:Exception => 
+              ctx.reporter.error("Wrong Int format, may be an overflow", currentPos)
+              (BAD().setPos(currentPos), afterWord)
           }
-          catch {
-                case e: Exception => 
-                  ctx.reporter.error("Invalid literal number. \n")
-                  (BAD().setPos(currentPos), afterNum)
-          }
-         
+
         // String literal
         case '"' =>
-          val (strChars, afterStr) = rest.span { case (ch, _) =>
-            ch != '"' && ch != '\n' && ch != EndOfFile  
-          }
-          val str = strChars.map(_._1).mkString
-          if(afterStr.head._1 == '"') {
-            (STRINGLIT(str).setPos(currentPos), afterStr.tail)
+          val (stringLiteral, afterWord) = rest.span { case (ch, _) => ch != '"' && ch != EndOfFile && ch != '\n'}
+
+          if(afterWord.head._1 == EndOfFile || afterWord.head._1 == '\n'){
+              ctx.reporter.error("String Literal never closed !", currentPos)
+              (BAD().setPos(currentPos), afterWord)
           }
           else {
-            ctx.reporter.error("End of file reached while parsing String litteral.", currentPos)
-            (BAD().setPos(currentPos), afterStr.tail)
+            val string = stringLiteral.map(_._1).mkString
+            (STRINGLIT(string).setPos(currentPos), afterWord.tail)
           }
-        case ';'        => useOne(SEMICOLON())
-        case '+'        => 
+
+        // Addition or concat
+        case '+' =>
           if(nextChar == '+')
             useTwo(CONCAT())
           else
-            useOne(PLUS()) 
-        case '-'     => useOne(MINUS())
-        case '*'    => useOne(TIMES())
-        case '/'      => useOne(DIV())
-        case '%'     => useOne(MOD())
-        case '<'    => 
+            useOne(PLUS())
+
+        // less or leq
+        case '<' =>
           if(nextChar == '=')
             useTwo(LESSEQUALS())
           else
             useOne(LESSTHAN())
-        case '&'    => 
-          if(nextChar == '&')
+
+        // logical AND
+        case '&' => 
+          if (nextChar == '&')
             useTwo(AND())
-          else{
-            ctx.reporter.error("Bad operator \n", currentPos)
-            (BAD().setPos(currentPos), rest)
+          else {
+            ctx.reporter.error("Not found: value '&'", currentPos)
+            useOne(BAD())
           }
-        case '|'       =>
-          if(nextChar == '|')
+
+        // logical OR
+        case '|' =>
+          if (nextChar == '|')
             useTwo(OR())
-          else{
-            ctx.reporter.error("Bad operator \n", currentPos)
-            (BAD().setPos(currentPos), rest)
+          else {
+            ctx.reporter.error("Not found: value '|'", currentPos)
+            useOne(BAD())
           }
-        case '='      => Some(INT())
+
+        // Equal, affectation or right arrow
+        case '=' =>
           if(nextChar == '=')
             useTwo(EQUALS())
           else if(nextChar == '>')
             useTwo(RARROW())
-          else
+          else 
             useOne(EQSIGN())
-        case '!'    => useOne(BANG())
-        case '{' => useOne(LBRACE())
-        case '}'  => useOne(RBRACE())
-        case '('     => useOne(LPAREN())
-        case ')'    => useOne(RPAREN())
-        case ','      => useOne(COMMA())
-        case ':'     => useOne(COLON())
-        case '.'    => useOne(DOT())
-        case '_'  => useOne(UNDERSCORE())
-        case _ => 
-          ctx.reporter.error("Bad operator \n", currentPos)
-          (BAD().setPos(currentPos), rest)
-        
-        
+
+        // All the tokens with one character and BAD entries
+        case c =>
+          oneCharacterTokens(currentChar) match {
+            case Some(t) => useOne(t)
+            case _ => 
+              ctx.reporter.error("Invalid character: " + c, currentPos)
+              useOne(BAD())
+          }
       }
     }
 

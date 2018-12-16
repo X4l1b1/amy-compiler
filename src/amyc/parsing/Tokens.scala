@@ -35,6 +35,7 @@ object Tokens {
   case class WHILE()    extends Token
   case class VAR()      extends Token
 
+
   /* Operators */
   case class SEMICOLON()  extends Token // ;
   case class PLUS()       extends Token // +

@@ -63,11 +63,17 @@ trait TreeModule {
   case class Call(qname: QualifiedName, args: List[Expr]) extends Expr
   // The ; operator
   case class Sequence(e1: Expr, e2: Expr) extends Expr
-  // Local variable definition
+  // Local constant definition
   case class Let(df: ParamDef, value: Expr, body: Expr) extends Expr
+  // Local variable definition
+  case class Var(df: ParamDef, value: Expr, body: Expr) extends Expr
+  // Local variable reassignment
+  case class Assign(df: ParamDef, newValue: Expr, body: Expr) extends Expr
+  // While Loop
+  case class While(cond: Expr, body: Expr) extends Expr
   // If-then-else
   case class Ite(cond: Expr, thenn: Expr, elze: Expr) extends Expr
-  // Pattern matchingMatc
+  // Pattern matching
   case class Match(scrut: Expr, cases: List[MatchCase]) extends Expr {
     require(cases.nonEmpty)
   }

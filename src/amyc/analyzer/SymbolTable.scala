@@ -12,7 +12,7 @@ trait Signature[RT <: Type]{
 }
 // The signature of a function in the symbol table
 case class FunSig(argTypes: List[Type], retType: Type, owner: Identifier) extends Signature[Type]
- // The signature of a constructor in the symbol table
+// The signature of a constructor in the symbol table
 case class ConstrSig(argTypes: List[Type], parent: Identifier, index: Int) extends Signature[ClassType] {
   val retType = ClassType(parent)
 }

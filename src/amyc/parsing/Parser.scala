@@ -71,47 +71,72 @@ object Parser extends Pipeline[Stream[Token], Program] {
     'Param ::= 'Id ~ COLON() ~ 'Type,
     'OptExpr ::= 'Expr | epsilon(),
     'Type ::= INT() | STRING() | BOOLEAN() | UNIT() | 'QName,
-    'QName ::= 'Id ~ 'QNameSt,
-  'QNameSt ::= epsilon() | DOT() ~ 'Id,
-  'Expr   ::= 'E2 ~ 'E1Hlpr | VAL() ~ 'Param ~ EQSIGN() ~ 'E2 ~ SEMICOLON() ~ 'E2 |
-              VAR() ~ 'Param ~ EQSIGN() ~ 'E2 ~ SEMICOLON() ~ 'Expr | // Var declaration
-              'Id ~ EQSIGN() ~ 'E2 ~ SEMICOLON() ~ 'Expr,    // Var assignation NOT SURE ABOUT THAT  Maybe it needs specific "=" token 
-  'E2   ::= 'E3 ~ 'E2Hlpr,
-  'E3   ::= 'E4 ~ 'E3Hlpr,
-  'E4   ::= 'E5 ~ 'E4Hlpr,
-  'E5   ::= 'E6 ~ 'E5Hlpr,
-  'E6   ::= 'E7 ~ 'E6Hlpr,
-  'E7   ::= 'E8 ~ 'E7Hlpr,
-  'E8   ::= 'E9 ~ 'E8Hlpr,
-  'E1Hlpr ::= SEMICOLON() ~ 'Expr | epsilon(),
-  'E2Hlpr ::= MATCH() ~ LBRACE() ~ 'Cases ~ RBRACE() | epsilon(),
-  'E3Hlpr ::= OR() ~ 'E3 | epsilon(),
-  'E4Hlpr ::= AND() ~ 'E4 | epsilon(),
-  'E5Hlpr ::= EQUALS() ~ 'E5 | epsilon(),
-  'E6Hlpr ::= LESSEQUALS() ~ 'E6 | LESSTHAN() ~ 'E6 | epsilon(),
-  'E7Hlpr ::= CONCAT() ~ 'E7 | MINUS() ~ 'E7 | PLUS() ~ 'E7 | epsilon(),
-  'E8Hlpr ::= TIMES() ~ 'E8 | DIV() ~ 'E8 | MOD() ~ 'E8 | epsilon(),
-  'E9   ::= BANG() ~ 'E10 | MINUS() ~ 'E10 | 'E10,
-  'E10  ::= 'Id ~ 'QNameHlpr | 'LiteralHlpr | LPAREN() ~ 'ParenHlpr | 
-        ERROR() ~ LPAREN() ~ 'Expr ~ RPAREN() |
-        IF() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'ElseHlpr |
-        'WhileExpr,
-  'WhileExpr ::= WHILE() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'Expr ~ RBRACE(),
-  'QNameHlpr ::= 'QNameSt ~ LPAREN() ~ 'Args ~ RPAREN() | epsilon(),
-  'ElseHlpr ::= epsilon() | ELSE() ~ LBRACE() ~ 'Expr ~ RBRACE(),
-  'ParenHlpr ::= RPAREN() | 'Expr ~ RPAREN(),
-  'LiteralHlpr ::= TRUE() | FALSE() | INTLITSENT | STRINGLITSENT,
-  'Literal ::= TRUE() | FALSE() | LPAREN() ~ RPAREN() | INTLITSENT | STRINGLITSENT,
-  'Cases ::= 'Case ~ 'CasesSt,
-  'CasesSt ::= epsilon() | 'Cases,
-  'Case ::= CASE() ~ 'Pattern ~ RARROW() ~ 'Expr,
-  'Pattern ::= UNDERSCORE() | 'Literal | 'Id ~ 'PaternSt,
-  'PaternSt ::= epsilon() | 'QNameSt ~ LPAREN() ~ 'Patterns ~ RPAREN(),
-  'Patterns ::= epsilon() | 'Pattern ~ 'PatternList,
-  'PatternList ::= epsilon() | COMMA() ~ 'Pattern ~ 'PatternList,
-  'Args ::= epsilon() | 'Expr ~ 'ExprList,
-  'ExprList ::= epsilon() | COMMA() ~ 'Expr ~ 'ExprList,
-  'Id ::= IDSENT
+
+    'QName ::= 'Id ~ 'QNameModule,
+    'QNameModule ::=  epsilon() | DOT() ~ 'Id, 
+
+    'Expr ::= 'ExprMatch ~ 'ExprH | VAL() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr,
+    'ExprH ::= epsilon() | SEMICOLON() ~ 'Expr,
+
+    'ExprMatch ::= 'ExprOr ~ 'ExprMatchH,
+    'ExprMatchH ::= epsilon() | MATCH() ~ LBRACE() ~ 'Cases ~ RBRACE(),
+
+    'ExprOr ::= 'ExprAnd ~ 'ExprOrH,
+    'ExprOrH ::=  epsilon() | OR() ~ 'ExprOr,
+
+    'ExprAnd ::= 'ExprEq ~ 'ExprAndH,
+    'ExprAndH ::=  epsilon() | AND() ~ 'ExprAnd,
+
+    'ExprEq ::= 'ExprLess ~ 'ExprEqH,
+    'ExprEqH ::= epsilon() | EQUALS() ~ 'ExprEq,
+
+    'ExprLess ::= 'ExprAddSub ~ 'ExprLessH,
+    'ExprLessH ::= epsilon() 
+                  | LESSTHAN() ~ 'ExprLess
+                  | LESSEQUALS() ~ 'ExprLess,
+
+    'ExprAddSub ::= 'ExprTimesDivMod ~ 'ExprAddSubH,
+    'ExprAddSubH ::= epsilon()
+                    | PLUS() ~ 'ExprAddSub
+                    | MINUS() ~ 'ExprAddSub
+                    | CONCAT() ~ 'ExprAddSub,
+
+    'ExprTimesDivMod ::= 'ExprUnary ~ 'ExprTimesDivModH,
+    'ExprTimesDivModH ::= epsilon()
+                         | TIMES() ~ 'ExprTimesDivMod
+                         | DIV() ~ 'ExprTimesDivMod
+                         | MOD() ~ 'ExprTimesDivMod,
+
+    'ExprUnary ::= 'ExprSpec
+                   | BANG() ~ 'ExprSpec
+                   | MINUS() ~ 'ExprSpec,
+
+    'ExprSpec ::=  'Id ~ 'ExprCallH
+                  | 'LiteralParen
+                  | LPAREN() ~ 'ExprParenH
+                  | ERROR() ~ LPAREN() ~ 'Expr ~ RPAREN()
+                  | IF() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'Expr ~ RBRACE() ~ ELSE() ~ LBRACE() ~ 'Expr ~ RBRACE(),
+
+    'ExprCallH ::= epsilon() | 'QNameModule ~ LPAREN() ~ 'Args ~ RPAREN(),
+    'ExprParenH ::= RPAREN() | 'Expr ~ RPAREN(),
+
+    'Literal ::= TRUE() | FALSE() | LPAREN() ~ RPAREN() | INTLITSENT | STRINGLITSENT,
+    'LiteralParen ::= TRUE() | FALSE() | INTLITSENT | STRINGLITSENT,
+
+    'Cases ::= 'Case ~ 'CasesH,
+    'CasesH ::= epsilon() | 'Case ~ 'CasesH,
+    'Case ::= CASE() ~ 'Pattern ~ RARROW() ~ 'Expr,
+
+    'Pattern ::= UNDERSCORE() 
+                | 'Literal 
+                | 'Id ~ 'PatternH,
+    'PatternH ::=  epsilon() | 'QNameModule ~ LPAREN() ~ 'Patterns ~ RPAREN(),
+    'Patterns ::= epsilon() | 'Pattern ~ 'PatternList,
+    'PatternList ::= epsilon() | COMMA() ~ 'Pattern ~ 'PatternList,
+
+    'Args ::= epsilon() | 'Expr ~ 'ExprList,
+    'ExprList ::= epsilon() | COMMA() ~ 'Expr ~ 'ExprList,
+    'Id ::= IDSENT
   ))
 
   def run(ctx: Context)(tokens: Stream[Token]): Program = {
@@ -125,13 +150,12 @@ object Parser extends Pipeline[Stream[Token], Program] {
 
     GrammarUtils.isLL1WithFeedback(grammar) match {
       case InLL1() =>
-        warning("Grammar is in LL1")
+        info("Grammar is in LL1")
+
       case other =>
         warning(other)
-        fatal(s"RATE MON GARS")
-
     }
-    
+
     val feedback = ParseTreeUtils.parseWithTrees(grammar, tokens.toList)
     feedback match {
       case s: Success[Token] =>
@@ -141,6 +165,7 @@ object Parser extends Pipeline[Stream[Token], Program] {
       case err =>
         fatal(s"Parsing failed: $err")
     }
+
   }
 
 }

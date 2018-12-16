@@ -49,137 +49,116 @@ object CodeGen extends Pipeline[(Program, SymbolTable), Module] {
     // Additional arguments are a mapping from identifiers (parameters and variables) to
     // their index in the wasm local variables, and a LocalsHandler which will generate
     // fresh local slots as required.
-    def cgExpr(expr: Expr)(implicit locals: Map[Identifier, Int], lh: LocalsHandler): Code = {
-      expr match {
-        case IntLiteral(i) => Const(i)
-        case BooleanLiteral(b) => if(b) Const(1) else Const(0)
-        case StringLiteral(s) => mkString(s)
-        case UnitLiteral() => Const(0)
-        case AmyCall(qname, args) =>
-        	val funcSig = table.getFunction(qname)
-        	funcSig match {
-        		// Call is for a constructor
-        		case None =>
-        			// Get constructor
-        			val constrSig = table.getConstructor(qname)
-        			constrSig match {
-        				case Some(ConstrSig(_,_,index))=>
-		        			// Get memory variable 
-		        			val memBoundary = lh.getFreshLocal()
-		        			// Prepare arguments, with index for memory offset when storing
-		        			val argsCode= args.map(arg => cgExpr(arg)).zipWithIndex
-		        			// Allocate memory space for aguments
-		        			GetGlobal(Utils.memoryBoundary) <:>
-		        			SetLocal(memBoundary) <:>
-		        			GetGlobal(Utils.memoryBoundary) <:>
-		        			Const(4 * (args.size + 1)) <:> Add <:>
-		        			SetGlobal(Utils.memoryBoundary) <:>
-		        			// Store constructor index
-		        			Const(index) <:> Store <:>
-		        			// Store arguments with offset starting at one from index storage
-		        			argsCode.map(arg => GetLocal(memBoundary) <:> Const(4 * (arg._2 + 1)) <:> Add <:> arg._1 <:> Store) <:>
-		        			GetLocal(memBoundary)
-        			}
-        		// Call is for a function
-        		case Some(FunSig(_,_,owner)) =>
-        			// Handle arguments and call function
-        			args.map(arg => cgExpr(arg)) <:> Call(Utils.fullName(owner, qname))
-        			
-        	}
-
-        case Match(scrut, cases) =>
-        	// First, get the scrut and save it to memory
-        	val scrutAddr = lh.getFreshLocal()
-        	val scrutCode: Code = cgExpr(scrut) <:> SetLocal(scrutAddr)
-        	/**
-			* Arguments :
-			*	value : Code of the value to be matched by the cases
-			*	case  : Pattern that has to be translated 
-			* Return :
-			* 	Code of the translated case and a 
-			*	Map[Identifier, Int] containing the potentially updated locals table with new temp variables
-        	**/
-        	def matchAndBind(value: Code, caase: Pattern): (Code, Map[Identifier, Int]) = {
-        		caase match {
-        			case WildcardPattern	() => // if '_', value will not be used, we drop it and return 'true' 
-        				(value <:> Drop <:> Const(1), locals)
-        			case IdPattern(id) => // Assign value to id and return true, update locals with new variable 
-        				// Get address for new variable
-        				val idAddr = lh.getFreshLocal()
-        				(value <:> SetLocal(idAddr) <:> Const(1), locals + (id -> idAddr))
-        			case LiteralPattern(lit) => // return 'lit == value', with lit translated into code
-        				(value <:> cgExpr(lit) <:> Eq, locals)
-        			case CaseClassPattern(constr, args) => // construct class constructor and args Code, then check each one  using matchAndBind
-        				// Get address for new constructor
-        				val constrAddr = lh.getFreshLocal()
-        				val ConstrSig(_, _, index) = table.getConstructor(constr).get
-
-        				// Create code to matchAndBind arguments along with Map of new variable produced
-        				val argsCode:List[(Code, Map[Identifier, Int])] = args.zipWithIndex.map(argWithIdx => matchAndBind(GetLocal(constrAddr) <:> Utils.adtField(argWithIdx._2) <:> Load, argWithIdx._1))
-        				// Make each result part of the whole condition,
-        				// FIX : call getFreshLocal for each argument (?)
-        				val argsCondCode: Code = {
-        					// if no arguments, it is true,
-        					if(args.isEmpty) Const(1)
-        					//   if only one argument, we just take its Code translation
-        					else if(args.size == 1) argsCode.map(_._1)
-        					//   if several arguments, link their translated Code with AND operator
-        					//	 TODO : Du coup c'est tous les And après et on a genre une espèce de mise en abime de And ?
-        					else argsCode.map(_._1) <:> args.tail.map(arg => And)
-        				}
-
-        				// Corresponds to : if(C_1 == C_2) {(v_1 == p_1) && ... && (v_n == p_n)} else 'false'
-        				val allConditionsCode = value <:> SetLocal(constrAddr) <:> GetLocal(constrAddr) <:> Load <:> Const(index) <:> Eq <:> // C_1 == C_2 <=> both constr have same address 
-        									  If_i32 <:> argsCondCode <:> Else <:> Const(0) <:> End
-
-        				(allConditionsCode, locals ++ argsCode.map(_._2).flatten.toMap)
-        		}
-
-
-        	}
-
-        	val casesCondCodeWithLocals: List[(MatchCase, (Code, Map[Identifier, Int]))] = cases.map(casee => (casee, matchAndBind(GetLocal(scrutAddr), casee.pat)))
-        	val wrappedConditions = casesCondCodeWithLocals.map(ccase => ccase._2._1 <:> If_i32 <:> cgExpr(ccase._1.expr)(ccase._2._2, lh) <:> Else)
-
-        	scrutCode <:> wrappedConditions <:> mkString("Match error") <:> cases.map(c => End)
-
-        case Plus(lhs, rhs) =>
-          cgExpr(lhs) <:> cgExpr(rhs) <:> Add
-        case Minus(lhs, rhs) =>
-          cgExpr(lhs) <:> cgExpr(rhs) <:> Sub
-        case Times(lhs, rhs) =>
-          cgExpr(lhs) <:> cgExpr(rhs) <:> Mul
-        case AmyDiv(lhs, rhs) =>
-          cgExpr(lhs) <:> cgExpr(rhs) <:> Div
-        case Mod(lhs, rhs) =>
-          cgExpr(lhs) <:> cgExpr(rhs) <:> Rem
-        case AmyAnd(lhs, rhs) =>
-          cgExpr(lhs) <:> If_i32 <:> cgExpr(rhs) <:> Else <:> Const(0) <:> End
-        case AmyOr(lhs, rhs) =>
-          cgExpr(lhs) <:> If_i32 <:> Const(1) <:> Else <:> cgExpr(rhs) <:> End
-        case LessThan(lhs, rhs) =>
-          cgExpr(lhs) <:> cgExpr(rhs) <:> Lt_s
-        case LessEquals(lhs, rhs) =>
-          cgExpr(lhs) <:> cgExpr(rhs) <:> Le_s
-        case Concat(lhs, rhs) =>
-          cgExpr(lhs) <:> cgExpr(rhs) <:> Call(concatImpl.name)
-        case Equals(lhs, rhs) =>
-          cgExpr(lhs) <:> cgExpr(rhs) <:> Eq
-        case Not(b) =>
-          cgExpr(b) <:> Eqz
-        case Neg(i) =>
-          Const(0) <:> cgExpr(i) <:> Sub
-        case Ite(cond, thenn, eelse) =>
-          cgExpr(cond) <:> If_i32 <:> cgExpr(thenn) <:> Else <:>  cgExpr(eelse) <:> End
-        case Let(df, value, body) =>
-          val id = df.name
-          val pos = lh.getFreshLocal()
-          // Specifiy updated implicit parameters
-          cgExpr(value) <:> SetLocal(pos) <:> cgExpr(body)(locals + (id -> pos), lh)
+    def cgExpr(expr: Expr)(implicit locals: Map[Identifier, Int], lh: LocalsHandler): Code = expr match {
+        // Variables
         case Variable(name) => GetLocal(locals(name))
-        case Sequence(head, tail) => cgExpr(head) <:> Drop <:> cgExpr(tail)         
-        case Error(m) => cgExpr(m) <:> Call("Std_printString") <:> Unreachable
-      }
+        
+        // Literals
+        case IntLiteral(i) => i2c(Const(i))
+        case BooleanLiteral(b) => i2c(Const(if(b) 1 else 0))
+        case StringLiteral(s) => mkString(s)
+        case UnitLiteral() => i2c(Const(0))
+
+        // Binary operators
+        case Plus(lhs, rhs) => cgExpr(lhs) <:> cgExpr(rhs) <:> Add
+        case Minus(lhs, rhs) => cgExpr(lhs) <:> cgExpr(rhs) <:> Sub
+        case Times(lhs, rhs) => cgExpr(lhs) <:> cgExpr(rhs) <:> Mul
+        case AmyDiv(lhs, rhs) => cgExpr(lhs) <:> cgExpr(rhs) <:> Div
+        case Mod(lhs, rhs) => cgExpr(lhs) <:> cgExpr(rhs) <:> Rem
+        case LessThan(lhs, rhs) => cgExpr(lhs) <:> cgExpr(rhs) <:> Lt_s
+        case LessEquals(lhs, rhs) => cgExpr(lhs) <:> cgExpr(rhs) <:> Le_s
+        case AmyAnd(lhs, rhs) => cgExpr(Ite(lhs, rhs, BooleanLiteral(false)))
+        case AmyOr(lhs, rhs) => cgExpr(Ite(lhs, BooleanLiteral(true), rhs)) 
+        case Concat(lhs, rhs) => cgExpr(lhs) <:> cgExpr(rhs) <:> Call("String_concat")
+        case Equals(lhs, rhs) => cgExpr(lhs) <:> cgExpr(rhs) <:> Eq
+
+        // Unary operators
+        case Not(e) => cgExpr(e) <:> Eqz
+        case Neg(e) => Const(-1) <:> cgExpr(e) <:> Mul
+
+        // Function/ type constructor call
+        case AmyCall(qname, args) => 
+            val signature = table.getFunction(qname).getOrElse(table.getConstructor(qname).get)
+            signature match {
+                case FunSig(_, _, owner) =>
+                    val argsInstructions = args.map(x => cgExpr(x))
+                    cs2c(argsInstructions) <:> Call(fullName(owner, qname))
+                  
+                case ConstrSig(_, _, index) => // Cf. http://lara.epfl.ch/~gschmid/clp18/codegen.pdf
+                    val baseAdr = lh.getFreshLocal()
+                    val b = GetGlobal(memoryBoundary)
+                    
+                    // Save the old memory boundary b
+                    val saveBoundary = b <:> SetLocal(baseAdr) 
+                    // Increment memory boundary by the size of the allocated ADT
+                    val allocateMemory = b <:> adtField(args.size) <:> SetGlobal(memoryBoundary) 
+                    // Store the constructor index to address b
+                    val storeIndex = GetLocal(baseAdr) <:> Const(index) <:> Store
+                    // For each field of the constructor, generate code for it and
+                    // store it in memory in the correct offset from b
+                    val storeArgs = args.zipWithIndex.foldLeft(Code(Nil)){
+                        (acc, arg) => acc <:> GetLocal(baseAdr) <:> adtField(arg._2) <:> cgExpr(arg._1) <:> Store
+                    }
+                    // Put All together and Push b to the stack (base address of the ADT)
+                    saveBoundary <:> allocateMemory<:> storeIndex <:> storeArgs <:> GetLocal(baseAdr)      
+            }
+
+        // The ; operator
+        case Sequence(e1, e2) => cgExpr(e1) <:> Drop <:> cgExpr(e2)
+
+        // Local variable definition
+        case Let(df, value, body) => 
+            val id = lh.getFreshLocal()
+            val newLocals = locals + (df.name -> id)
+            cgExpr(value) <:> SetLocal(id) <:> cgExpr(body)(newLocals, lh)
+        
+        // If-then-else
+        case Ite(cond, thenn, elze) => cgExpr(cond) <:> If_i32 <:> cgExpr(thenn) <:> Else <:> cgExpr(elze) <:> End
+        
+        // Pattern matching
+        case Match(scrut, cases) => // Cf. http://lara.epfl.ch/~gschmid/clp18/codegen.pdf
+            def matchAndBind(pat: Pattern, ptr: Int): (Code, Map[Identifier, Int]) = pat match {
+                case WildcardPattern() => (GetLocal(ptr) <:> Drop <:> Const(1), Map())
+                case IdPattern(name) => 
+                    val id = lh.getFreshLocal()
+                    (GetLocal(ptr) <:> SetLocal(id) <:> Const(1), Map(name -> id))
+                case LiteralPattern(lit) => (GetLocal(ptr) <:> cgExpr(lit) <:> Eq, Map())
+                case CaseClassPattern(constr, args) => 
+                    // Constructor address and signature
+                    val signature = table.getConstructor(constr).get
+                    
+                    // Check if Both scrut and pattern are equals
+                    val checkConstructor = GetLocal(ptr) <:> Load <:> Const(signature.index) <:> Eq 
+                    
+                    // Save all parameters as locals and check if they match and bind, starting with true (empty args)
+                    var (checkArgs, newEnv) = args.zipWithIndex.foldRight((Code(List(Const(1))),  Map[Identifier, Int]())){
+                        (arg, acc) => 
+                            val ptrArg = lh.getFreshLocal()
+                            val (caseMatch, newEnv) = matchAndBind(arg._1, ptrArg)
+                            val saveMemory = GetLocal(ptr) <:> adtField(arg._2) <:> Load <:> SetLocal(ptrArg)
+                            var matchArg = caseMatch <:> If_i32 <:> Const(1) <:> Else <:> Const(0) <:> End 
+    
+                            (acc._1 <:> saveMemory <:> matchArg <:> And, acc._2 ++ newEnv)
+                    }
+                                    
+                    // Putting all together
+                    (checkConstructor <:> checkArgs <:> And, newEnv)
+            }
+        
+            val baseAdr = lh.getFreshLocal()
+            val handleScrut = cgExpr(scrut) <:> SetLocal(baseAdr)
+            val handleCases = cs2c(cases.map{
+                case cse => 
+                    val (caseMatch, newEnv) = matchAndBind(cse.pat, baseAdr)
+                    caseMatch <:> If_i32 <:> cgExpr(cse.expr)(locals ++ newEnv, lh) <:> Else
+            })
+            val handleError = cgExpr(Error(StringLiteral("Match Error"))) <:> is2c(cases.map(x => End))
+        
+            handleScrut <:> handleCases <:> handleError
+            
+
+        // Represents a computational error; prints its message, then exits
+        case Error(msg) => cgExpr(msg) <:> Call("Std_printString") <:> Unreachable
     }
 
     Module(

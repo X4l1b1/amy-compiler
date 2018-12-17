@@ -79,7 +79,6 @@ object Parser extends Pipeline[Stream[Token], Program] {
             | VAR() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr // Variable definition Update
             | VAL() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr,
             
-      
     'ExprH ::= epsilon() 
                 | SEMICOLON() ~ 'Expr 
                 | 'Id ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr, // Variable assignation Update

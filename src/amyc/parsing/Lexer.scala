@@ -148,9 +148,14 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
           }
           val word = wordLetters.map(_._1).mkString
 
+          println("keyword")
           keywords(word) match {
             case Some(t) => (t.setPos(currentPos), afterWord)
-            case _ => (ID(word).setPos(currentPos), afterWord)
+            case _ => 
+              if (nextChar != '=')
+                (ID(word).setPos(currentPos), afterWord)
+              else
+                (ASSIGN(word).setPos(currentPos), afterWord.tail)
           }
 
         // Int literal

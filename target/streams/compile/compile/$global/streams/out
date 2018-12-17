@@ -1,10 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/ASTConstructorLL1.scala:8:8: not found: object ctx[0m
-[0m[[0m[31merror[0m] [0m[0mimport ctx.reporter._[0m
-[0m[[0m[31merror[0m] [0m[0m       ^[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/ASTConstructorLL1.scala:31:5: not found: value info[0m
-[0m[[0m[31merror[0m] [0m[0m    info("EKQEHGDHWBEQ")[0m
-[0m[[0m[31merror[0m] [0m[0m    ^[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/ASTConstructorLL1.scala:49:9: not found: value info[0m
-[0m[[0m[31merror[0m] [0m[0m        info("EKQEHGDHWBEQ")[0m
-[0m[[0m[31merror[0m] [0m[0m        ^[0m
-[0m[[0m[31merror[0m] [0m[0mthree errors found[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/Lexer.scala:154:28: comparing values of types Char and String using `==' will always yield false[0m
+[0m[[0m[33mwarn[0m] [0m[0m              if (nextChar == "=") [0m
+[0m[[0m[33mwarn[0m] [0m[0m                           ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m

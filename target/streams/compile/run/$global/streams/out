@@ -5,10 +5,112 @@
 [0m[[0m[0mdebug[0m] [0m[0m	/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/lib/grammarcomparison_2.12-0.1.jar[0m
 [0m[[0m[0mdebug[0m] [0m[0m	/Users/francoisquellec/.sbt/boot/scala-2.12.3/lib/scala-library.jar[0m
 [0m[[0m[0mdebug[0m] [0m[0m	/Users/francoisquellec/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.1.1.jar[0m
-[0m[[0m[0mdebug[0m] [0m[0mWaiting for thread run-main-2c to terminate.[0m
-[0m[[0m[0mdebug[0m] [0m[0mInterrupting thread run-main-2c[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Interrupted run-main-2c[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Thread run-main-2c exited.[0m
+[0m[[0m[0mdebug[0m] [0m[0mWaiting for thread run-main-3d to terminate.[0m
+[0m[[0m[31merror[0m] [0m[0m(run-main-3d) scala.MatchError: [0m
+[0m[[0m[31merror[0m] [0m[0m'Expr[0m
+[0m[[0m[31merror[0m] [0m[0m    'Assign[0m
+[0m[[0m[31merror[0m] [0m[0m        ASSIGN(a)[0m
+[0m[[0m[31merror[0m] [0m[0m    'Expr[0m
+[0m[[0m[31merror[0m] [0m[0m        'ExprMatch[0m
+[0m[[0m[31merror[0m] [0m[0m            'ExprOr[0m
+[0m[[0m[31merror[0m] [0m[0m                'ExprAnd[0m
+[0m[[0m[31merror[0m] [0m[0m                    'ExprEq[0m
+[0m[[0m[31merror[0m] [0m[0m                        'ExprLess[0m
+[0m[[0m[31merror[0m] [0m[0m                            'ExprAddSub[0m
+[0m[[0m[31merror[0m] [0m[0m                                'ExprTimesDivMod[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprUnary[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'ExprSpec[0m
+[0m[[0m[31merror[0m] [0m[0m                                            'LiteralParen[0m
+[0m[[0m[31merror[0m] [0m[0m                                                INTLIT(2)[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprTimesDivModH[0m
+[0m[[0m[31merror[0m] [0m[0m                                'ExprAddSubH[0m
+[0m[[0m[31merror[0m] [0m[0m                                    PLUS()[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprAddSub[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'ExprTimesDivMod[0m
+[0m[[0m[31merror[0m] [0m[0m                                            'ExprUnary[0m
+[0m[[0m[31merror[0m] [0m[0m                                                'ExprSpec[0m
+[0m[[0m[31merror[0m] [0m[0m                                                    'LiteralParen[0m
+[0m[[0m[31merror[0m] [0m[0m                                                        INTLIT(2)[0m
+[0m[[0m[31merror[0m] [0m[0m                                            'ExprTimesDivModH[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'ExprAddSubH[0m
+[0m[[0m[31merror[0m] [0m[0m                            'ExprLessH[0m
+[0m[[0m[31merror[0m] [0m[0m                        'ExprEqH[0m
+[0m[[0m[31merror[0m] [0m[0m                    'ExprAndH[0m
+[0m[[0m[31merror[0m] [0m[0m                'ExprOrH[0m
+[0m[[0m[31merror[0m] [0m[0m            'ExprMatchH[0m
+[0m[[0m[31merror[0m] [0m[0m        'ExprH (of class grammarcomp.parsing.Node)[0m
+[0m[[0m[31merror[0m] [0m[0mscala.MatchError: [0m
+[0m[[0m[31merror[0m] [0m[0m'Expr[0m
+[0m[[0m[31merror[0m] [0m[0m    'Assign[0m
+[0m[[0m[31merror[0m] [0m[0m        ASSIGN(a)[0m
+[0m[[0m[31merror[0m] [0m[0m    'Expr[0m
+[0m[[0m[31merror[0m] [0m[0m        'ExprMatch[0m
+[0m[[0m[31merror[0m] [0m[0m            'ExprOr[0m
+[0m[[0m[31merror[0m] [0m[0m                'ExprAnd[0m
+[0m[[0m[31merror[0m] [0m[0m                    'ExprEq[0m
+[0m[[0m[31merror[0m] [0m[0m                        'ExprLess[0m
+[0m[[0m[31merror[0m] [0m[0m                            'ExprAddSub[0m
+[0m[[0m[31merror[0m] [0m[0m                                'ExprTimesDivMod[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprUnary[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'ExprSpec[0m
+[0m[[0m[31merror[0m] [0m[0m                                            'LiteralParen[0m
+[0m[[0m[31merror[0m] [0m[0m                                                INTLIT(2)[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprTimesDivModH[0m
+[0m[[0m[31merror[0m] [0m[0m                                'ExprAddSubH[0m
+[0m[[0m[31merror[0m] [0m[0m                                    PLUS()[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprAddSub[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'ExprTimesDivMod[0m
+[0m[[0m[31merror[0m] [0m[0m                                            'ExprUnary[0m
+[0m[[0m[31merror[0m] [0m[0m                                                'ExprSpec[0m
+[0m[[0m[31merror[0m] [0m[0m                                                    'LiteralParen[0m
+[0m[[0m[31merror[0m] [0m[0m                                                        INTLIT(2)[0m
+[0m[[0m[31merror[0m] [0m[0m                                            'ExprTimesDivModH[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'ExprAddSubH[0m
+[0m[[0m[31merror[0m] [0m[0m                            'ExprLessH[0m
+[0m[[0m[31merror[0m] [0m[0m                        'ExprEqH[0m
+[0m[[0m[31merror[0m] [0m[0m                    'ExprAndH[0m
+[0m[[0m[31merror[0m] [0m[0m                'ExprOrH[0m
+[0m[[0m[31merror[0m] [0m[0m            'ExprMatchH[0m
+[0m[[0m[31merror[0m] [0m[0m        'ExprH (of class grammarcomp.parsing.Node)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExprSpec(ASTConstructorLL1.scala:143)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExprUnary(ASTConstructorLL1.scala:138)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExprTimesDivMod(ASTConstructorLL1.scala:126)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExprAddSub(ASTConstructorLL1.scala:115)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExprLess(ASTConstructorLL1.scala:104)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExprEq(ASTConstructorLL1.scala:93)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExprAnd(ASTConstructorLL1.scala:82)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExprOr(ASTConstructorLL1.scala:71)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExprMatch(ASTConstructorLL1.scala:60)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExpr(ASTConstructorLL1.scala:48)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructorLL1.constructExpr(ASTConstructorLL1.scala:47)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructor.$anonfun$constructModule$2(ASTConstructor.scala:28)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructor.constructOption(ASTConstructor.scala:266)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructor.constructModule(ASTConstructor.scala:28)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructor.$anonfun$constructProgram$1(ASTConstructor.scala:16)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructor.constructList(ASTConstructor.scala:224)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.ASTConstructor.constructProgram(ASTConstructor.scala:16)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.Parser$.run(Parser.scala:170)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.parsing.Parser$.run(Parser.scala:17)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:12)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:10)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:10)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:10)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:10)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.Main$.main(Main.scala:35)[0m
+[0m[[0m[31merror[0m] [0m[0m	at amyc.Main.main(Main.scala)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)[0m
+[0m[[0m[31merror[0m] [0m[0m	at java.lang.reflect.Method.invoke(Method.java:498)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.Run.invokeMain(Run.scala:89)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.Run.run0(Run.scala:83)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.Run.execute$1(Run.scala:61)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.Run.$anonfun$run$4(Run.scala:73)[0m
+[0m[[0m[31merror[0m] [0m[0m	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.util.InterfaceUtil$$anon$1.get(InterfaceUtil.scala:10)[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.TrapExit$App.run(TrapExit.scala:252)[0m
+[0m[[0m[31merror[0m] [0m[0m	at java.lang.Thread.run(Thread.java:748)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Thread run-main-3d exited.[0m
 [0m[[0m[0mdebug[0m] [0m[0mInterrupting remaining threads (should be all daemons).[0m
 [0m[[0m[0mdebug[0m] [0m[0mSandboxed run complete..[0m
 [0m[[0m[31merror[0m] [0m[0mjava.lang.RuntimeException: Nonzero exit code: 1[0m

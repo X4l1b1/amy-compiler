@@ -1,6 +1,4 @@
 object Factorial {
-    val a: Int = 0;
-    while(a < 3){
-        a = a + 1;
-    }
+    var a: Int = 0;
+    a= 2 + 2
 }

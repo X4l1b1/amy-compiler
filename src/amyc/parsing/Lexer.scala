@@ -32,6 +32,8 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
     case "true"     => Some(TRUE())
     case "Unit"     => Some(UNIT())
     case "val"      => Some(VAL())
+    case "var"      => Some(VAR()) // Variable Token
+    case "while"      => Some(WHILE()) // Variable Token
     case _          => None
   }
 

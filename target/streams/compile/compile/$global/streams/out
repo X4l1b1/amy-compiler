@@ -1,7 +1,10 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/ASTConstructorLL1.scala:44:36: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : (amyc.ast.NominalTreeModule.QualifiedName, amyc.utils.Positioned)[0m
-[0m[[0m[31merror[0m] [0m[0m required: amyc.ast.NominalTreeModule.Name[0m
-[0m[[0m[31merror[0m] [0m[0m    (which expands to)  String[0m
-[0m[[0m[31merror[0m] [0m[0m        Sequence(exprMatch, Assign(qname, exprM, expr))[0m
-[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/ASTConstructorLL1.scala:8:8: not found: object ctx[0m
+[0m[[0m[31merror[0m] [0m[0mimport ctx.reporter._[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/ASTConstructorLL1.scala:31:5: not found: value info[0m
+[0m[[0m[31merror[0m] [0m[0m    info("EKQEHGDHWBEQ")[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/ASTConstructorLL1.scala:49:9: not found: value info[0m
+[0m[[0m[31merror[0m] [0m[0m        info("EKQEHGDHWBEQ")[0m
+[0m[[0m[31merror[0m] [0m[0m        ^[0m
+[0m[[0m[31merror[0m] [0m[0mthree errors found[0m

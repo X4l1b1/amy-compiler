@@ -6,6 +6,7 @@ import utils.Positioned
 import ast.NominalTreeModule._
 import Tokens._
 
+
 // Implements the translation from parse trees to ASTs for the LL1 grammar,
 // that is, this should correspond to Parser.amyGrammarLL1.
 // We extend the plain ASTConstructor as some things will be the same -- you should
@@ -40,9 +41,9 @@ class ASTConstructorLL1 extends ASTConstructor {
         val expr = constructExpr(exp)
         val (name, pos) = constructName(id)
         Sequence(exprMatch, Assign(name, exprM, expr))
-      case Node('Expr ::= (VAL() :: _), List(Leaf(vt), param, _, value, _, body)) => // Variable definition
+      case Node('Expr ::= (VAL() :: _), List(Leaf(vt), param, _, value, _, body)) => 
         Let(constructParam(param), constructExprMatch(value), constructExpr(body)).setPos(vt)
-      case Node('Expr ::= (VAR() :: _), List(Leaf(vt), param, _, value, _, body)) =>
+      case Node('Expr ::= (VAR() :: _), List(Leaf(vt), param, _, value, _, body)) => // Variable definition
         Var(constructParam(param), constructExprMatch(value), constructExpr(body)).setPos(vt)
       case p => constructExprMatch(p)
     }

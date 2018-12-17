@@ -1,10 +1,6 @@
 object Factorial {
-  def fact(i: Int): Int = {
-    if (i < 2) { 1 }
-    else { 
-      val rec: Int = fact(i-1);
-      i * rec
+    val a: Int = 0;
+    while(a < 3){
+        a = a + 1;
     }
-  }
-  fact(5)
 }

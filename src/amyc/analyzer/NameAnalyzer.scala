@@ -209,11 +209,11 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
             val paramsDef = S.ParamDef(idName, S.TypeTree(transformType(df.tt, module)))
             S.Var(paramsDef, transformExpr(value), transformExpr(body)(module, (params, locals + (df.name -> idName))))
           
-        case N.Assign(name: N.Name, newValue: N.Expr, body: N.Expr) => // Variable Assignation
+        case N.Assign(name: N.Name, newValue: N.Expr) => // Variable Assignation
             val nameS = locals.get(name)
                         .getOrElse(params.get(name)
                         .getOrElse(fatal(s"Undefined variable $name")))
-            S.Assign(nameS, transformExpr(newValue), transformExpr(body))
+            S.Assign(nameS, transformExpr(newValue))
           
         case N.While(cond: N.Expr, body: N.Expr) => // While loop
             S.While(transformExpr(cond), transformExpr(body))

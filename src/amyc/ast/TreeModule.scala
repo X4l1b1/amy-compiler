@@ -68,7 +68,7 @@ trait TreeModule {
   // Local variable definition
   case class Var(df: ParamDef, value: Expr, body: Expr) extends Expr
   // Local variable reassignment
-  case class Assign(name: Name, newValue: Expr, body: Expr) extends Expr
+  case class Assign(name: Name, newValue: Expr) extends Expr
   // While Loop
   case class While(cond: Expr, body: Expr) extends Expr
   // If-then-else

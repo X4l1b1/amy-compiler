@@ -34,6 +34,8 @@ class ASTConstructor {
     ptree match {
       case Node('Id ::= _, List(Leaf(id@ID(name)))) =>
         (name, id)
+      case Node('VarId ::= _, List(Leaf(id@ASSIGN(name)))) =>
+        (name, id)
     }
   }
 

@@ -35,12 +35,9 @@ class ASTConstructorLL1 extends ASTConstructor {
         val exprMatch = constructExprMatch(expMatch)
         val expr = constructExpr(exp)
         Sequence(exprMatch, expr)
-      case Node('Expr ::= List('ExprMatch, 'ExprH), List(expMatch, Node('ExprH ::= _, List(id, _, expM, _, exp)))) => // Variable Assignation
-        val exprMatch = constructExprMatch(expMatch)
-        val exprM = constructExprMatch(expM)
-        val expr = constructExpr(exp)
+      case Node('Expr ::= List('VarId, _, 'Expr), List(id, _, expr)) => // Variable Assignation
         val (name, pos) = constructName(id)
-        Sequence(exprMatch, Assign(name, exprM, expr))
+        Assign(name, constructExpr(expr))
       case Node('Expr ::= (VAL() :: _), List(Leaf(vt), param, _, value, _, body)) => 
         Let(constructParam(param), constructExprMatch(value), constructExpr(body)).setPos(vt)
       case Node('Expr ::= (VAR() :: _), List(Leaf(vt), param, _, value, _, body)) => // Variable definition

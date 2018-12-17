@@ -1,4 +1,6 @@
 object Factorial {
     var a: Int = 0;
-    a= 2 + 2
+    while(a < 3){
+        a = a + 1
+    }
 }

@@ -78,11 +78,10 @@ object Parser extends Pipeline[Stream[Token], Program] {
     'Expr ::= 'ExprMatch ~ 'ExprH 
             | VAR() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr // Variable definition Update
             | VAL() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr
-            | 'Assign ~ 'Expr,
+            | 'VarId ~ EQSIGN() ~ 'Expr, // Variable assignation Update
             
     'ExprH ::= epsilon() 
-                | SEMICOLON() ~ 'Expr 
-                | 'Id ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr, // Variable assignation Update
+            | SEMICOLON() ~ 'Expr, 
 
     'ExprMatch ::= 'ExprOr ~ 'ExprMatchH,
     'ExprMatchH ::= epsilon() | MATCH() ~ LBRACE() ~ 'Cases ~ RBRACE(),
@@ -144,7 +143,7 @@ object Parser extends Pipeline[Stream[Token], Program] {
     'Args ::= epsilon() | 'Expr ~ 'ExprList,
     'ExprList ::= epsilon() | COMMA() ~ 'Expr ~ 'ExprList,
     'Id ::= IDSENT,
-    'Assign ::= ASSIGNSENT
+    'VarId ::= IDVARSENT
   ))
 
   def run(ctx: Context)(tokens: Stream[Token]): Program = {

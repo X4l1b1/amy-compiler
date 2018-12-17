@@ -147,15 +147,18 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
             Character.isLetterOrDigit(ch) || ch == '_'
           }
           val word = wordLetters.map(_._1).mkString
-
-          println("keyword")
+          
           keywords(word) match {
             case Some(t) => (t.setPos(currentPos), afterWord)
             case _ => 
-              if (nextChar != '=')
+              if (afterWord.dropWhile{ case (c, _) => Character.isWhitespace(c)}.head._1 != '='){
+                  println("ID:'" + nextChar + "'")
                 (ID(word).setPos(currentPos), afterWord)
-              else
-                (ASSIGN(word).setPos(currentPos), afterWord.tail)
+              }
+              else{
+                  println("Assign")
+                (ASSIGN(word).setPos(currentPos), afterWord)
+              }
           }
 
         // Int literal

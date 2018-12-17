@@ -77,7 +77,7 @@ object Tokens {
 
   // These three tokens are meant to represent their respective category in the parser
   val IDSENT = ID("")
-  val ASSIGNSENT =  ASSIGN("")
+  val IDVARSENT =  ASSIGN("")
   val INTLITSENT = INTLIT(0)
   val STRINGLITSENT = STRINGLIT("")  
 }

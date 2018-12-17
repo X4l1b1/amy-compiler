@@ -84,10 +84,21 @@ object TypeChecker extends Pipeline[(Program, SymbolTable), (Program, SymbolTabl
           val typeE1 = TypeVariable.fresh()
           genConstraints(e1, typeE1) ++ genConstraints(e2, expected)
 
-        // Local variable definition
+        // Local constant definition
         case Let(df, value, body) => 
           genConstraints(value, df.tt.tpe) ++ genConstraints(body, expected)(env + (df.name -> df.tt.tpe))
-
+        
+        // Local variable definition
+        case Var(df, value, body) =>
+          genConstraints(value, df.tt.tpe) ++ genConstraints(body, expected)(env + (df.name -> df.tt.tpe))
+          
+        // Local variable assignement
+        case Assign(name, value) =>
+          val varType= env.getOrElse(name, UnitType)
+          genConstraints(value, varType)
+          
+        case While(cond, body) => genConstraints(cond, BooleanType) ++ genConstraints(body, UnitType)
+          
         // If-then-else
         case Ite(cond, thenn, elze) =>
           genConstraints(cond, BooleanType) ++ genConstraints(thenn, expected) ++ genConstraints(elze, expected)

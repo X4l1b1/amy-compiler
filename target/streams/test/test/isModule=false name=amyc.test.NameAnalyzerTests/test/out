@@ -1,6 +1,110 @@
 [0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestArgumentNumberFunction[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestArgumentNumberFunction[0m finished, took 0.025 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestArgumentNumberFunction[0m finished, took 0.06 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestParamAndLocal[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestParamAndLocal[0m finished, took 0.022 sec[0m
-[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 2 total, 0.048s[0m[0m
+[0m[[0m[31merror[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[31mtestParamAndLocal[0m failed: scala.[31mMatchError[0m: [0m
+[0m[[0m[31merror[0m] [0m[0m'Expr[0m
+[0m[[0m[31merror[0m] [0m[0m    'ExprV[0m
+[0m[[0m[31merror[0m] [0m[0m        VAL()[0m
+[0m[[0m[31merror[0m] [0m[0m    'Param[0m
+[0m[[0m[31merror[0m] [0m[0m        'Id[0m
+[0m[[0m[31merror[0m] [0m[0m            ID(i)[0m
+[0m[[0m[31merror[0m] [0m[0m        COLON()[0m
+[0m[[0m[31merror[0m] [0m[0m        'Type[0m
+[0m[[0m[31merror[0m] [0m[0m            INT()[0m
+[0m[[0m[31merror[0m] [0m[0m    EQSIGN()[0m
+[0m[[0m[31merror[0m] [0m[0m    'ExprMatch[0m
+[0m[[0m[31merror[0m] [0m[0m        'ExprOr[0m
+[0m[[0m[31merror[0m] [0m[0m            'ExprAnd[0m
+[0m[[0m[31merror[0m] [0m[0m                'ExprEq[0m
+[0m[[0m[31merror[0m] [0m[0m                    'ExprLess[0m
+[0m[[0m[31merror[0m] [0m[0m                        'ExprAddSub[0m
+[0m[[0m[31merror[0m] [0m[0m                            'ExprTimesDivMod[0m
+[0m[[0m[31merror[0m] [0m[0m                                'ExprUnary[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprSpec[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'Id[0m
+[0m[[0m[31merror[0m] [0m[0m                                            ID(i)[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'ExprCallH[0m
+[0m[[0m[31merror[0m] [0m[0m                                'ExprTimesDivModH[0m
+[0m[[0m[31merror[0m] [0m[0m                            'ExprAddSubH[0m
+[0m[[0m[31merror[0m] [0m[0m                                PLUS()[0m
+[0m[[0m[31merror[0m] [0m[0m                                'ExprAddSub[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprTimesDivMod[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'ExprUnary[0m
+[0m[[0m[31merror[0m] [0m[0m                                            'ExprSpec[0m
+[0m[[0m[31merror[0m] [0m[0m                                                'LiteralParen[0m
+[0m[[0m[31merror[0m] [0m[0m                                                    INTLIT(1)[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'ExprTimesDivModH[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprAddSubH[0m
+[0m[[0m[31merror[0m] [0m[0m                        'ExprLessH[0m
+[0m[[0m[31merror[0m] [0m[0m                    'ExprEqH[0m
+[0m[[0m[31merror[0m] [0m[0m                'ExprAndH[0m
+[0m[[0m[31merror[0m] [0m[0m            'ExprOrH[0m
+[0m[[0m[31merror[0m] [0m[0m        'ExprMatchH[0m
+[0m[[0m[31merror[0m] [0m[0m    SEMICOLON()[0m
+[0m[[0m[31merror[0m] [0m[0m    'Expr[0m
+[0m[[0m[31merror[0m] [0m[0m        'ExprMatch[0m
+[0m[[0m[31merror[0m] [0m[0m            'ExprOr[0m
+[0m[[0m[31merror[0m] [0m[0m                'ExprAnd[0m
+[0m[[0m[31merror[0m] [0m[0m                    'ExprEq[0m
+[0m[[0m[31merror[0m] [0m[0m                        'ExprLess[0m
+[0m[[0m[31merror[0m] [0m[0m                            'ExprAddSub[0m
+[0m[[0m[31merror[0m] [0m[0m                                'ExprTimesDivMod[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprUnary[0m
+[0m[[0m[31merror[0m] [0m[0m                                        'ExprSpec[0m
+[0m[[0m[31merror[0m] [0m[0m                                            'Id[0m
+[0m[[0m[31merror[0m] [0m[0m                                                ID(i)[0m
+[0m[[0m[31merror[0m] [0m[0m                                            'ExprCallH[0m
+[0m[[0m[31merror[0m] [0m[0m                                    'ExprTimesDivModH[0m
+[0m[[0m[31merror[0m] [0m[0m                                'ExprAddSubH[0m
+[0m[[0m[31merror[0m] [0m[0m                            'ExprLessH[0m
+[0m[[0m[31merror[0m] [0m[0m                        'ExprEqH[0m
+[0m[[0m[31merror[0m] [0m[0m                    'ExprAndH[0m
+[0m[[0m[31merror[0m] [0m[0m                'ExprOrH[0m
+[0m[[0m[31merror[0m] [0m[0m            'ExprMatchH[0m
+[0m[[0m[31merror[0m] [0m[0m        'ExprH (of class grammarcomp.parsing.Node), took 0.062 sec[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructorLL1.constructExprSpec(ASTConstructorLL1.scala:134)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructorLL1.constructExprUnary(ASTConstructorLL1.scala:129)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructorLL1.constructExprTimesDivMod(ASTConstructorLL1.scala:117)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructorLL1.constructExprAddSub(ASTConstructorLL1.scala:106)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructorLL1.constructExprLess(ASTConstructorLL1.scala:95)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructorLL1.constructExprEq(ASTConstructorLL1.scala:84)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructorLL1.constructExprAnd(ASTConstructorLL1.scala:73)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructorLL1.constructExprOr(ASTConstructorLL1.scala:62)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructorLL1.constructExprMatch(ASTConstructorLL1.scala:51)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructorLL1.constructExpr(ASTConstructorLL1.scala:39)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructor.constructDef0(ASTConstructor.scala:62)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructor.constructDef(ASTConstructor.scala:43)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructor.$anonfun$constructModule$1(ASTConstructor.scala:27)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructor.constructList(ASTConstructor.scala:224)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructor.constructModule(ASTConstructor.scala:27)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructor.$anonfun$constructProgram$1(ASTConstructor.scala:16)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructor.constructList(ASTConstructor.scala:224)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.ASTConstructor.constructProgram(ASTConstructor.scala:16)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.Parser$.run(Parser.scala:166)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.parsing.Parser$.run(Parser.scala:17)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:10)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:10)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.runPipeline(CompilerTest.scala:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.$anonfun$runPipelineRedirected$1(CompilerTest.scala:21)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withIn(Console.scala:226)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.$anonfun$testWithRedirectedIO$2(TestUtils.scala:18)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withErr(Console.scala:192)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.$anonfun$testWithRedirectedIO$1(TestUtils.scala:17)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withOut(Console.scala:163)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.testWithRedirectedIO(TestUtils.scala:16)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.testWithRedirectedIO$(TestUtils.scala:11)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.testWithRedirectedIO(CompilerTest.scala:8)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.runPipelineRedirected(CompilerTest.scala:21)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.compareOutputs(CompilerTest.scala:53)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestSuite.shouldOutput(TestSuite.scala:25)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestSuite.shouldOutput(TestSuite.scala:30)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.NameAnalyzerTests.testParamAndLocal([35mNameAnalyzerTests.scala[0m:[33m40[0m)[0m
+[0m[[0m[31merror[0m] [0m[0m    ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestParamAndLocal[0m finished, took 0.071 sec[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[31m1 failed[0m[34m, [0m[34m0 ignored[0m[34m, 2 total, 0.132s[0m[0m

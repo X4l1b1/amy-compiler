@@ -7,3 +7,4 @@ packageSubmission
 test
 packageSubmission
 test
+run examples/Factorial.scala

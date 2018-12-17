@@ -1,9 +1,70 @@
 [0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestEmptyObject[0m started[0m
-[0m[[0m[31merror[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[31mtestEmptyObject[0m failed: [0m
-[0m[[0m[31merror[0m] [0m[0m  Nonzero code returned from nodejs[0m
-[0m[[0m[31merror[0m] [0m[0m, took 0.074 sec[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestEmptyObject[0m finished, took 0.074 sec[0m
+[0m[[0m[31merror[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[31mtestEmptyObject[0m failed: java.lang.[31mRuntimeException[0m: No exit code: process destroyed., took 0.085 sec[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.package$.error(package.scala:27)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessImpl$CompoundProcess.$anonfun$exitValue$1(ProcessImpl.scala:89)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessImpl$CompoundProcess.exitValue(ProcessImpl.scala:89)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessBuilderImpl$AbstractBuilder.$anonfun$runBuffered$1(ProcessBuilderImpl.scala:150)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.runtime.java8.JFunction0$mcI$sp.apply(JFunction0$mcI$sp.java:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessLogger$$anon$1.buffer(ProcessLogger.scala:99)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessBuilderImpl$AbstractBuilder.runBuffered(ProcessBuilderImpl.scala:150)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessBuilderImpl$AbstractBuilder.$bang(ProcessBuilderImpl.scala:116)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CodegenTests$CodePrinterExecutor$.run(CodegenTests.scala:23)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CodegenTests$CodePrinterExecutor$.run(CodegenTests.scala:14)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.runPipeline(CompilerTest.scala:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.$anonfun$runPipelineRedirected$1(CompilerTest.scala:21)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withIn(Console.scala:226)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.$anonfun$testWithRedirectedIO$2(TestUtils.scala:18)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withErr(Console.scala:192)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.$anonfun$testWithRedirectedIO$1(TestUtils.scala:17)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withOut(Console.scala:163)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.testWithRedirectedIO(TestUtils.scala:16)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.testWithRedirectedIO$(TestUtils.scala:11)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.testWithRedirectedIO(CompilerTest.scala:8)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.runPipelineRedirected(CompilerTest.scala:21)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.compareOutputs(CompilerTest.scala:53)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestSuite.shouldOutput(TestSuite.scala:25)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestSuite.shouldOutput(TestSuite.scala:30)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.ExecutionTests.testEmptyObject(ExecutionTests.scala:11)[0m
+[0m[[0m[31merror[0m] [0m[0m    ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestEmptyObject[0m finished, took 0.091 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestMinimalError[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestMinimalError[0m finished, took 0.064 sec[0m
-[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[31m1 failed[0m[34m, [0m[34m0 ignored[0m[34m, 2 total, 0.142s[0m[0m
+[0m[[0m[31merror[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[31mtestMinimalError[0m failed: java.lang.[31mRuntimeException[0m: No exit code: process destroyed., took 0.041 sec[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.package$.error(package.scala:27)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessImpl$CompoundProcess.$anonfun$exitValue$1(ProcessImpl.scala:89)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessImpl$CompoundProcess.exitValue(ProcessImpl.scala:89)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessBuilderImpl$AbstractBuilder.$anonfun$runBuffered$1(ProcessBuilderImpl.scala:150)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.runtime.java8.JFunction0$mcI$sp.apply(JFunction0$mcI$sp.java:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessLogger$$anon$1.buffer(ProcessLogger.scala:99)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessBuilderImpl$AbstractBuilder.runBuffered(ProcessBuilderImpl.scala:150)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessBuilderImpl$AbstractBuilder.$bang(ProcessBuilderImpl.scala:116)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CodegenTests$CodePrinterExecutor$.run(CodegenTests.scala:23)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CodegenTests$CodePrinterExecutor$.run(CodegenTests.scala:14)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.runPipeline(CompilerTest.scala:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.$anonfun$runPipelineRedirected$1(CompilerTest.scala:21)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withIn(Console.scala:226)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.$anonfun$testWithRedirectedIO$2(TestUtils.scala:18)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withErr(Console.scala:192)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.$anonfun$testWithRedirectedIO$1(TestUtils.scala:17)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withOut(Console.scala:163)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.testWithRedirectedIO(TestUtils.scala:16)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.testWithRedirectedIO$(TestUtils.scala:11)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.testWithRedirectedIO(CompilerTest.scala:8)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.runPipelineRedirected(CompilerTest.scala:21)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.demandFailure(CompilerTest.scala:82)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestSuite.shouldFail(TestSuite.scala:37)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestSuite.shouldFail(TestSuite.scala:42)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.ExecutionTests.testMinimalError(ExecutionTests.scala:13)[0m
+[0m[[0m[31merror[0m] [0m[0m    ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestMinimalError[0m finished, took 0.047 sec[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[31m2 failed[0m[34m, [0m[34m0 ignored[0m[34m, 2 total, 0.144s[0m[0m

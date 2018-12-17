@@ -76,9 +76,8 @@ object Parser extends Pipeline[Stream[Token], Program] {
     'QNameModule ::=  epsilon() | DOT() ~ 'Id, 
 
     'Expr ::= 'ExprMatch ~ 'ExprH 
-            | 'Id ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr // Update
-            | 'ExprV ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr,
-    'ExprV ::= VAL() | VAR(), // Update
+            | VAR() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr // Variable definition Update
+            | VAL() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr,
     'ExprH ::= epsilon() | SEMICOLON() ~ 'Expr,
 
     'ExprMatch ::= 'ExprOr ~ 'ExprMatchH,
@@ -119,9 +118,11 @@ object Parser extends Pipeline[Stream[Token], Program] {
                   | LPAREN() ~ 'ExprParenH
                   | ERROR() ~ LPAREN() ~ 'Expr ~ RPAREN()
                   | IF() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'Expr ~ RBRACE() ~ ELSE() ~ LBRACE() ~ 'Expr ~ RBRACE()
-                  | WHILE() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'Expr ~ RBRACE(), // Update
+                  | WHILE() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'Expr ~ RBRACE(), // While Loop Update
 
-    'ExprCallH ::= epsilon() | 'QNameModule ~ LPAREN() ~ 'Args ~ RPAREN(),
+    'ExprCallH ::= epsilon() 
+                    | 'QNameModule ~ LPAREN() ~ 'Args ~ RPAREN()
+                    | EQSIGN() ~ 'ExprMatch ~ 'ExprH, // Variable assignation Update
     'ExprParenH ::= RPAREN() | 'Expr ~ RPAREN(),
 
     'Literal ::= TRUE() | FALSE() | LPAREN() ~ RPAREN() | INTLITSENT | STRINGLITSENT,

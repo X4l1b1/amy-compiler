@@ -1,20 +1,7 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/Parser.scala:125:21: not found: value |[0m
-[0m[[0m[31merror[0m] [0m[0m                    | EQSIGN() ~ 'ExprMatch ~ 'ExprH, // Variable assignation Update[0m
-[0m[[0m[31merror[0m] [0m[0m                    ^[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/Parser.scala:156:36: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : Any[0m
-[0m[[0m[31merror[0m] [0m[0m required: grammarcomp.grammar.CFGrammar.Grammar[?][0m
-[0m[[0m[31merror[0m] [0m[0m    GrammarUtils.isLL1WithFeedback(grammar) match {[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/ASTConstructorLL1.scala:44:36: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : (amyc.ast.NominalTreeModule.QualifiedName, amyc.utils.Positioned)[0m
+[0m[[0m[31merror[0m] [0m[0m required: amyc.ast.NominalTreeModule.Name[0m
+[0m[[0m[31merror[0m] [0m[0m    (which expands to)  String[0m
+[0m[[0m[31merror[0m] [0m[0m        Sequence(exprMatch, Assign(qname, exprM, expr))[0m
 [0m[[0m[31merror[0m] [0m[0m                                   ^[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/Parser.scala:164:50: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : Any[0m
-[0m[[0m[31merror[0m] [0m[0m required: grammarcomp.grammar.CFGrammar.Grammar[?][0m
-[0m[[0m[31merror[0m] [0m[0m    val feedback = ParseTreeUtils.parseWithTrees(grammar, tokens.toList)[0m
-[0m[[0m[31merror[0m] [0m[0m                                                 ^[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/Parser.scala:167:21: value constructProgram is not a member of Any[0m
-[0m[[0m[31merror[0m] [0m[0m        constructor.constructProgram(s.parseTrees.head)[0m
-[0m[[0m[31merror[0m] [0m[0m                    ^[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/Parser.scala:169:48: value position is not a member of Any[0m
-[0m[[0m[31merror[0m] [0m[0m        fatal(s"Parsing failed: $err", tok.obj.position)[0m
-[0m[[0m[31merror[0m] [0m[0m                                               ^[0m
-[0m[[0m[31merror[0m] [0m[0m5 errors found[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

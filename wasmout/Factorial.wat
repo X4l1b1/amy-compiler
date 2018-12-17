@@ -95,28 +95,28 @@
     call $js_readString0
     set_global 0
   )
-
-  (func $Factorial_fact (param i32) (result i32) (local i32)
-    get_local 0
-    i32.const 2
-    i32.lt_s
-    if (result i32)
-      i32.const 1
-    else
-      get_local 0
-      i32.const 1
-      i32.sub
-      call $Factorial_fact
-      set_local 1
-      get_local 0
-      get_local 1
-      i32.mul
-    end
-  )
   (export "Factorial_main" (func $Factorial_main))
-  (func $Factorial_main 
-    i32.const 5
-    call $Factorial_fact
+  (func $Factorial_main (local i32)
+    i32.const 0
+    set_local 0
+    block $label_4
+      loop $label_3
+        get_local 0
+        i32.const 3
+        i32.lt_s
+        if
+          get_local 0
+          i32.const 1
+          i32.add
+          set_local 0
+          get_local 0
+          br $label_3
+        else
+          br $label_4
+        end
+      end
+    end
+    i32.const 1
     drop
   )
 )

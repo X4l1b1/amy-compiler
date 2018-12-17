@@ -151,12 +151,11 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
           keywords(word) match {
             case Some(t) => (t.setPos(currentPos), afterWord)
             case _ => 
-              if (afterWord.dropWhile{ case (c, _) => Character.isWhitespace(c)}.head._1 != '='){
-                  println("ID:'" + nextChar + "'")
+              if (afterWord.dropWhile{ case (c, _) => Character.isWhitespace(c)}.head._1 != '='
+                 || afterWord.dropWhile{ case (c, _) => Character.isWhitespace(c)}.tail.head._1 == '='){
                 (ID(word).setPos(currentPos), afterWord)
               }
               else{
-                  println("Assign")
                 (ASSIGN(word).setPos(currentPos), afterWord)
               }
           }

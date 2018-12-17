@@ -112,6 +112,31 @@ object CodeGen extends Pipeline[(Program, SymbolTable), Module] {
             val newLocals = locals + (df.name -> id)
             cgExpr(value) <:> SetLocal(id) <:> cgExpr(body)(newLocals, lh)
         
+        // Local variable definition
+        case Var(df, value, body) =>
+            val id = lh.getFreshLocal()
+            val newLocals = locals + (df.name -> id)
+            cgExpr(value) <:> SetLocal(id) <:> cgExpr(body)(newLocals, lh)
+          
+        // Local variable assignement
+        case Assign(name, value) =>
+            cgExpr(value) <:> SetLocal(locals(name)) <:> GetLocal(locals(name))
+        
+        // While Loop
+        case While(cond, body) => 
+            val loop_start = getFreshLabel()
+            val loop_end = getFreshLabel()
+            Block(loop_end) <:> 
+                Loop(loop_start) <:>
+                    cgExpr(cond) <:> If_void <:>
+                        cgExpr(body) <:>
+                        Br(loop_start) <:>
+                    Else <:> 
+                        Br(loop_end) <:> 
+                    End <:>
+                End <:>
+            End <:> Const(1)
+        
         // If-then-else
         case Ite(cond, thenn, elze) => cgExpr(cond) <:> If_i32 <:> cgExpr(thenn) <:> Else <:> cgExpr(elze) <:> End
         

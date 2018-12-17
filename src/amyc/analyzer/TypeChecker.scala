@@ -96,7 +96,8 @@ object TypeChecker extends Pipeline[(Program, SymbolTable), (Program, SymbolTabl
         case Assign(name, value) =>
           val varType= env.getOrElse(name, UnitType)
           genConstraints(value, varType)
-          
+        
+        // While Loop
         case While(cond, body) => genConstraints(cond, BooleanType) ++ genConstraints(body, UnitType)
           
         // If-then-else

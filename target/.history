@@ -8,3 +8,4 @@ test
 packageSubmission
 test
 run examples/Factorial.scala
+run library/Std.scala examples/Factorial.scala

@@ -126,16 +126,16 @@ object CodeGen extends Pipeline[(Program, SymbolTable), Module] {
         case While(cond, body) => 
             val loop_start = getFreshLabel()
             val loop_end = getFreshLabel()
-            Block(loop_end) <:> 
-                Loop(loop_start) <:>
-                    cgExpr(cond) <:> If_void <:>
-                        cgExpr(body) <:>
+            Block(loop_end) <:> // BLOCK WHILE
+                Loop(loop_start) <:> // LOOP BODY OF WHILE
+                    cgExpr(cond) <:> If_void <:> // Check condition
+                        cgExpr(body) <:> // if true execute body and jump to loop_start
                         Br(loop_start) <:>
                     Else <:> 
-                        Br(loop_end) <:> 
+                        Br(loop_end) <:> // else jump to end of block loop_end
                     End <:>
-                End <:>
-            End <:> Const(1)
+                End <:> // END LOOP BODY OF WHILE
+            End <:> Const(1) // END BLOCK WHILE
         
         // If-then-else
         case Ite(cond, thenn, elze) => cgExpr(cond) <:> If_i32 <:> cgExpr(thenn) <:> Else <:> cgExpr(elze) <:> End

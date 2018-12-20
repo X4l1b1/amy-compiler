@@ -183,8 +183,8 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
         case N.Call(qname: N.QualifiedName, args: List[N.Expr]) => 
           val moduleS = qname.module.getOrElse(module)
           val argsS = args.map(x => transformExpr(x))
-          val (identifier, constrSig) = table.getConstructor(module, qname.name)
-                                        .getOrElse(table.getFunction(module, qname.name)
+          val (identifier, constrSig) = table.getConstructor(moduleS, qname.name)
+                                        .getOrElse(table.getFunction(moduleS, qname.name)
                                         .getOrElse(fatal(s"Call to undefined function/constructor $module.$qname.name")))
           if(constrSig.argTypes.size != args.size)
             fatal(s"Wrong Number of arguments in $module.$qname.name")

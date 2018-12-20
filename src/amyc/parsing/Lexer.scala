@@ -151,8 +151,8 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
           keywords(word) match {
             case Some(t) => (t.setPos(currentPos), afterWord)
             case _ => 
-              if (afterWord.dropWhile{ case (c, _) => Character.isWhitespace(c)}.head._1 != '='
-                 || afterWord.dropWhile{ case (c, _) => Character.isWhitespace(c)}.tail.head._1 == '='){
+              val newStream = afterWord.dropWhile{ case (c, _) => Character.isWhitespace(c)}
+              if (newStream.head._1 != '=' || newStream.tail.head._1 == '=' || newStream.tail.head._1 == '>' || afterWord.tail.dropWhile{ case (c, _) => Character.isWhitespace(c)} == '{'){
                 (ID(word).setPos(currentPos), afterWord)
               }
               else{

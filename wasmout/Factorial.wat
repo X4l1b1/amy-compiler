@@ -260,10 +260,38 @@
   )
   (export "Factorial_main" (func $Factorial_main))
   (func $Factorial_main (local i32)
-    i32.const 6
+    i32.const 1
     call $Std_printInt
     drop
     i32.const 0
+    set_local 0
+    i32.const 2
+    call $Std_printInt
+    drop
+    block $label_4
+      loop $label_3
+        get_local 0
+        i32.const 5
+        i32.lt_s
+        if
+          get_local 0
+          call $Std_printInt
+          drop
+          get_local 0
+          i32.const 1
+          i32.add
+          set_local 0
+          get_local 0
+          br $label_3
+        else
+          br $label_4
+        end
+      end
+    end
+    i32.const 1
+    drop
+    i32.const 0
+    call $Std_printInt
     drop
   )
 )

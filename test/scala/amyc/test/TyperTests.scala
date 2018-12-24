@@ -23,5 +23,9 @@ class TyperTests extends TestSuite {
 
   @Test def testArithError1 = shouldFail("ArithError1")
 
+  @Test def testVarError = shouldFail("VarError")
+
   @Test def testArithmetic = shouldPass("Arithmetic")
+
+  @Test def testVarUpdate = shouldPass("VarUpdate")
 }

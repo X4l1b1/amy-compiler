@@ -12,6 +12,7 @@ class ParserTests extends TestSuite with amyc.MainHelpers {
 
   @Test def testEmpty = shouldOutput("Empty")
   @Test def testLiterals = shouldOutput("Literals")
+  @Test def testWhileLoop = shouldPass("WhileLoop")
 
   @Test def testEmptyFile = shouldFail("EmptyFile")
 }

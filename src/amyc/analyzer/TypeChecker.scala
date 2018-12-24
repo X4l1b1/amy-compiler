@@ -90,8 +90,10 @@ object TypeChecker extends Pipeline[(Program, SymbolTable), (Program, SymbolTabl
         
         // Local variable definition
         case Var(df, value, body) =>
-          genConstraints(value, df.tt.tpe) ++ genConstraints(body, expected)(env + (df.name -> df.tt.tpe))
-          
+          if(value != null)
+            genConstraints(value, df.tt.tpe) ++ genConstraints(body, expected)(env + (df.name -> df.tt.tpe))
+          else 
+            genConstraints(body, expected)(env + (df.name -> df.tt.tpe))
         // Local variable assignement
         case Assign(name, value) =>
           val varType= env.getOrElse(name, UnitType)
@@ -169,13 +171,11 @@ object TypeChecker extends Pipeline[(Program, SymbolTable), (Program, SymbolTabl
       constraints match {
         case Nil => ()
         case Constraint(found, expected, pos) :: more =>
-          // HINT: You can use the `subst_*` helper above to replace a type variable
-          //       by another type in your current set of constraints.
           expected match {
             case TypeVariable(id) => solveConstraints(subst_*(constraints, id, found))
             case _ => 
               if(found != expected){
-                error("TypeError: " + found + " does not match " + expected, pos)
+                error("TypeError: " + found + " does not match " + expected + " at pos : " + pos, pos)
               }
               solveConstraints(more)
           } 

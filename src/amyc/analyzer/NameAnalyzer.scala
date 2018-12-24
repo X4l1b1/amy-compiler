@@ -153,7 +153,6 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
           val nameS = locals.get(name)
                         .getOrElse(params.get(name)
                         .getOrElse(fatal(s"Undefined variable $name")))
-                      
           S.Variable(nameS)
           
         // Literals
@@ -202,17 +201,19 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
             val paramsDef = S.ParamDef(idName, S.TypeTree(transformType(df.tt, module)))
             S.Let(paramsDef, transformExpr(value), transformExpr(body)(module, (params, locals + (df.name -> idName))))
         
-        case N.Var(df: N.ParamDef, value: N.Expr, body: N.Expr) => // Variable definition
+        case N.Var(df: N.ParamDef, value, body: N.Expr) => // Variable definition
             if(locals.contains(df.name))
                 fatal(s"Local variable $df.name already defined")
-            val idName = Identifier.fresh(df.name)
+            val idName = Identifier.fresh(df.name, Identifier.ASSIGNABLE)
             val paramsDef = S.ParamDef(idName, S.TypeTree(transformType(df.tt, module)))
             S.Var(paramsDef, transformExpr(value), transformExpr(body)(module, (params, locals + (df.name -> idName))))
-          
+            
         case N.Assign(name: N.Name, newValue: N.Expr) => // Variable Assignation
             val nameS = locals.get(name)
                         .getOrElse(params.get(name)
                         .getOrElse(fatal(s"Undefined variable $name")))
+            if(nameS.assignable != Identifier.ASSIGNABLE)
+                fatal(s"Variable $name is not assignable")
             S.Assign(nameS, transformExpr(newValue))
           
         case N.While(cond: N.Expr, body: N.Expr) => // While loop

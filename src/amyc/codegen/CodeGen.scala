@@ -116,7 +116,7 @@ object CodeGen extends Pipeline[(Program, SymbolTable), Module] {
         case Var(df, value, body) =>
             val id = lh.getFreshLocal()
             val newLocals = locals + (df.name -> id)
-            cgExpr(value) <:> SetLocal(id) <:> cgExpr(body)(newLocals, lh)
+            if(value != null) cgExpr(value) else Const(0) <:> SetLocal(id) <:> cgExpr(body)(newLocals, lh)
           
         // Local variable assignement
         case Assign(name, value) =>

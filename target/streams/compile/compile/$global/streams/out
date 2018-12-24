@@ -1,4 +1,17 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/analyzer/NameAnalyzer.scala:104:55: value tte is not a member of amyc.ast.NominalTreeModule.ParamDef[0m
-[0m[[0m[31merror[0m] [0m[0m              params.map(param => transformType(param.tte, moduleName)), transformType(retType, moduleName))[0m
-[0m[[0m[31merror[0m] [0m[0m                                                      ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/analyzer/NameAnalyzer.scala:215:22: ambiguous reference to overloaded definition,[0m
+[0m[[0m[31merror[0m] [0m[0mboth method assignable in class Identifier of type => Boolean[0m
+[0m[[0m[31merror[0m] [0m[0mand  value assignable in class Identifier of type => Boolean[0m
+[0m[[0m[31merror[0m] [0m[0mmatch expected type ?[0m
+[0m[[0m[31merror[0m] [0m[0m            if(nameS.assignable != Identifier.ASSIGNABLE)[0m
+[0m[[0m[31merror[0m] [0m[0m                     ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/ast/Identifier.scala:17:30: ambiguous reference to overloaded definition,[0m
+[0m[[0m[31merror[0m] [0m[0mboth method assignable in class Identifier of type => Boolean[0m
+[0m[[0m[31merror[0m] [0m[0mand  value assignable in class Identifier of type => Boolean[0m
+[0m[[0m[31merror[0m] [0m[0mmatch expected type Boolean[0m
+[0m[[0m[31merror[0m] [0m[0m  def assignable : Boolean = assignable[0m
+[0m[[0m[31merror[0m] [0m[0m                             ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/ast/Identifier.scala:17:7: method assignable is defined twice;[0m
+[0m[[0m[31merror[0m] [0m[0m  the conflicting value assignable was defined at line 15:54[0m
+[0m[[0m[31merror[0m] [0m[0m  def assignable : Boolean = assignable[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0mthree errors found[0m

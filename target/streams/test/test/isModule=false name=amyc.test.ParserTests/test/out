@@ -1,8 +1,8 @@
 [0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmpty[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmpty[0m finished, took 0.03 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmpty[0m finished, took 0.052 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmptyFile[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmptyFile[0m finished, took 0.022 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmptyFile[0m finished, took 0.04 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestLiterals[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestLiterals[0m finished, took 0.038 sec[0m
-[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 3 total, 0.092s[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestLiterals[0m finished, took 0.064 sec[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 3 total, 0.158s[0m[0m

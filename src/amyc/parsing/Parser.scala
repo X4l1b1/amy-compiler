@@ -76,12 +76,19 @@ object Parser extends Pipeline[Stream[Token], Program] {
     'QNameModule ::=  epsilon() | DOT() ~ 'Id, 
 
     'Expr ::= 'ExprMatch ~ 'ExprH 
-            | VAR() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr // Variable definition Update
-            | VAL() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ SEMICOLON() ~ 'Expr
-            | 'VarId ~ EQSIGN() ~ 'Expr, // Variable assignation Update
+            | 'ExprVar,
+      
+    'ExprVar ::=  VAR() ~ 'Param ~ 'ExprVarH ~ 'Sequence                            // Variable definition Update
+                | 'VarId ~ EQSIGN() ~ 'ExprMatch ~ 'ExprH                        // Variable assignation Update
+                | VAL() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ 'Sequence, 
+      
+    'ExprVarH ::= epsilon()                                                         // Variable definition Update
+                | EQSIGN() ~ 'ExprMatch,                                            // Variable initialization Update
             
     'ExprH ::= epsilon() 
-            | SEMICOLON() ~ 'Expr, 
+            | 'Sequence, 
+      
+    'Sequence ::= SEMICOLON() ~ 'Expr, 
 
     'ExprMatch ::= 'ExprOr ~ 'ExprMatchH,
     'ExprMatchH ::= epsilon() | MATCH() ~ LBRACE() ~ 'Cases ~ RBRACE(),
@@ -121,7 +128,7 @@ object Parser extends Pipeline[Stream[Token], Program] {
                   | LPAREN() ~ 'ExprParenH
                   | ERROR() ~ LPAREN() ~ 'Expr ~ RPAREN()
                   | IF() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'Expr ~ RBRACE() ~ ELSE() ~ LBRACE() ~ 'Expr ~ RBRACE()
-                  | WHILE() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'Expr ~ RBRACE(), // While Loop Update
+                  | WHILE() ~ LPAREN() ~ 'Expr ~ RPAREN() ~ LBRACE() ~ 'Expr ~ RBRACE(),  // While Loop Update
 
     'ExprCallH ::= epsilon() | 'QNameModule ~ LPAREN() ~ 'Args ~ RPAREN(),
     'ExprParenH ::= RPAREN() | 'Expr ~ RPAREN(),

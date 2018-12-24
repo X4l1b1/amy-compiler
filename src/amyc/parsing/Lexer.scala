@@ -152,7 +152,10 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
             case Some(t) => (t.setPos(currentPos), afterWord)
             case _ => 
               val newStream = afterWord.dropWhile{ case (c, _) => Character.isWhitespace(c)}
-              if (newStream.head._1 != '=' || newStream.tail.head._1 == '=' || newStream.tail.head._1 == '>' || afterWord.tail.dropWhile{ case (c, _) => Character.isWhitespace(c)} == '{'){
+              if (newStream.head._1 != '='                                                          // Check if next char is not an "equals"
+                  || newStream.tail.head._1 == '='                                                  // Check if next token is not EQUALS   
+                  || newStream.tail.head._1 == '>'                                                  // Check if next token is not LESSEQUALS  
+                  || afterWord.tail.dropWhile{ case (c, _) => Character.isWhitespace(c)} == '{'){   // Check if current token is not funDef  
                 (ID(word).setPos(currentPos), afterWord)
               }
               else{

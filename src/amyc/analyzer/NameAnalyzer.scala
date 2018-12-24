@@ -214,6 +214,7 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
                         .getOrElse(fatal(s"Undefined variable $name")))
             if(nameS.assignable != Identifier.ASSIGNABLE)
                 fatal(s"Variable $name is not assignable")
+
             S.Assign(nameS, transformExpr(newValue))
           
         case N.While(cond: N.Expr, body: N.Expr) => // While loop

@@ -31,10 +31,10 @@ class ASTConstructorLL1 extends ASTConstructor {
     pTree match {
       case Node('Expr ::= List('ExprMatch, 'ExprH), List(expMatch, Node('ExprH ::= _, List()))) =>
         constructExprMatch(expMatch)
-      case Node('Expr ::= List('ExprMatch, 'ExprH), List(expMatch, Node('ExprH ::= _, List(Node('Sequence ::= _, List(_, exp)))))) =>
+      case Node('Expr ::= List('ExprMatch, 'ExprH), List(expMatch, Node('ExprH ::= _, List(Node('Sequence ::= _, List(Leaf(sTok), exp)))))) =>
         val exprMatch = constructExprMatch(expMatch)
         val expr = constructExpr(exp)
-        Sequence(exprMatch, expr)
+        Sequence(exprMatch, expr).setPos(sTok)
       case Node('Expr ::= List('ExprVar), List(expVar)) =>
         constructExprVar(expVar)
       case p => constructExprMatch(p)
@@ -43,14 +43,21 @@ class ASTConstructorLL1 extends ASTConstructor {
     
   def constructExprVar(pTree: NodeOrLeaf[Token]): Expr = {
     pTree match {
-      case Node('ExprVar ::= List('VarId, _, _, _), List(id, _, expr, Node('ExprH ::= _, List(Node('Sequence ::= _, List(_, exp)))))) =>       // Variable assignation Update
+      case Node('ExprVar ::= List('VarId, _, _, _), List(id, _, expr, Node('ExprH ::= _, List(Node('Sequence ::= _, List(Leaf(sTok), exp)))))) =>       // Variable assignation Update
         val (name, pos) = constructName(id)
-        Sequence(Assign(name, constructExpr(expr)), constructExpr(exp))
+        Sequence(Assign(name, constructExpr(expr)).setPos(pos), constructExpr(exp)).setPos(sTok)
       case Node('ExprVar ::= List('VarId, _, _, _), List(id, _, expr, Node('ExprH ::= _, List()))) =>       // Variable assignation Update
         val (name, pos) = constructName(id)
-        Assign(name, constructExpr(expr))
+        Assign(name, constructExpr(expr)).setPos(pos)
       case Node('ExprVar ::= (VAR() :: _), List(Leaf(vt), param, Node('ExprVarH ::= _, List()), Node('Sequence ::= _, List(_, body)))) => // Variable definition Update
-        Var(constructParam(param), UnitLiteral(), constructExpr(body)).setPos(vt)
+        val paramExpr = constructParam(param)
+        val valueExpr = paramExpr.tt.tpe match {
+            case IntType => IntLiteral()
+            case BooleanType => BooleanLiteral()
+            case StringType => StringLiteral()
+            case UnitType => UnitLiteral()
+        }
+        Var(paramExpr, valueExpr, constructExpr(body)).setPos(vt)
       case Node('ExprVar ::= (VAR() :: _), List(Leaf(vt), param, Node('ExprVarH ::= _, List(_, value)), Node('Sequence ::= _, List(_, body)))) => // Variable definition Update
         Var(constructParam(param), constructExprMatch(value), constructExpr(body)).setPos(vt)
       case Node('ExprVar ::= (VAL() :: _), List(Leaf(vt), param, _, value, Node('Sequence ::= _, List(_, body)))) => 

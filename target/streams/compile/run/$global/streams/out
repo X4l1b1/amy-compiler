@@ -5,30 +5,8 @@
 [0m[[0m[0mdebug[0m] [0m[0m	/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/lib/grammarcomparison_2.12-0.1.jar[0m
 [0m[[0m[0mdebug[0m] [0m[0m	/Users/francoisquellec/.sbt/boot/scala-2.12.3/lib/scala-library.jar[0m
 [0m[[0m[0mdebug[0m] [0m[0m	/Users/francoisquellec/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.1.1.jar[0m
-[0m[[0m[0mdebug[0m] [0m[0mWaiting for thread run-main-1e to terminate.[0m
-[0m[[0m[0mdebug[0m] [0m[0mInterrupting thread run-main-1e[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Interrupted run-main-1e[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Thread run-main-1e exited.[0m
+[0m[[0m[0mdebug[0m] [0m[0mWaiting for thread run-main-25 to terminate.[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Thread run-main-25 exited.[0m
 [0m[[0m[0mdebug[0m] [0m[0mInterrupting remaining threads (should be all daemons).[0m
 [0m[[0m[0mdebug[0m] [0m[0mSandboxed run complete..[0m
-[0m[[0m[31merror[0m] [0m[0mjava.lang.RuntimeException: Nonzero exit code: 1[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Run$.executeTrapExit(Run.scala:120)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Run.run(Run.scala:73)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Defaults$.$anonfun$runTask$3(Defaults.scala:1200)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Defaults$.$anonfun$runTask$3$adapted(Defaults.scala:1198)[0m
-[0m[[0m[31merror[0m] [0m[0m	at scala.Function1.$anonfun$compose$1(Function1.scala:44)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.internal.util.$tilde$greater.$anonfun$$u2219$1(TypeFunctions.scala:42)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.std.Transform$$anon$4.work(System.scala:64)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Execute.$anonfun$submit$2(Execute.scala:257)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.internal.util.ErrorHandling$.wideConvert(ErrorHandling.scala:17)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Execute.work(Execute.scala:266)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.Execute.$anonfun$submit$1(Execute.scala:257)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.ConcurrentRestrictions$$anon$4.$anonfun$submitValid$1(ConcurrentRestrictions.scala:167)[0m
-[0m[[0m[31merror[0m] [0m[0m	at sbt.CompletionService$$anon$2.call(CompletionService.scala:32)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.util.concurrent.FutureTask.run(FutureTask.java:266)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.util.concurrent.FutureTask.run(FutureTask.java:266)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)[0m
-[0m[[0m[31merror[0m] [0m[0m	at java.lang.Thread.run(Thread.java:748)[0m
-[0m[[0m[31merror[0m] [0m[0m(compile:[31mrun[0m) Nonzero exit code: 1[0m
+[0m[[0m[0mdebug[0m] [0m[0mExited with code 0[0m

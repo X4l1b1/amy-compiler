@@ -37,10 +37,10 @@ trait TreeModule {
 
   // Literals
   trait Literal[+T] extends Expr { val value: T }
-  case class IntLiteral(value: Int) extends Literal[Int]
-  case class BooleanLiteral(value: Boolean) extends Literal[Boolean]
-  case class StringLiteral(value: String) extends Literal[String]
-  case class UnitLiteral() extends Literal[Unit] { val value: Unit = () }
+  case class IntLiteral(value: Int = 0) extends Literal[Int]                    // Update: Add default value
+  case class BooleanLiteral(value: Boolean = false) extends Literal[Boolean]    // Update: Add default value
+  case class StringLiteral(value: String = "") extends Literal[String]          // Update: Add default value
+  case class UnitLiteral() extends Literal[Unit] { val value: Unit = () }      
 
   // Binary operators
   case class Plus(lhs: Expr, rhs: Expr) extends Expr

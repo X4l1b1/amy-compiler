@@ -39,6 +39,10 @@ class NameAnalyzerTests extends TestSuite {
 
   @Test def testParamAndLocal = shouldOutput("ParamAndLocal")
 
+  @Test def testVariable = shouldOutput("Variable")
+  @Test def testWhileLoop = shouldOutput("WhileLoop")
+  @Test def testAssignToValFail = shouldFail("AssignToVal")
+
   @Test def testArgumentNumberFunction = shouldFail("ArgumentNumberFunction")
 
 }

@@ -1,12 +1,12 @@
 [0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestWhileLoop[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestWhileLoop[0m finished, took 0.045 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestWhileLoop[0m finished, took 0.073 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmpty[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmpty[0m finished, took 0.028 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmpty[0m finished, took 0.031 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmptyFile[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmptyFile[0m finished, took 0.019 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmptyFile[0m finished, took 0.025 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestVariable[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestVariable[0m finished, took 0.036 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestVariable[0m finished, took 0.033 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestLiterals[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestLiterals[0m finished, took 0.02 sec[0m
-[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 5 total, 0.208s[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestLiterals[0m finished, took 0.024 sec[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 5 total, 0.187s[0m[0m

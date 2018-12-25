@@ -79,7 +79,7 @@ object Parser extends Pipeline[Stream[Token], Program] {
             | 'ExprVar,                       
       
     'ExprVar ::=  VAR() ~ 'Param ~ 'ExprVarH ~ 'Sequence                // Update: Variable definition and initialization 
-                | 'Id ~ EQSIGN() ~ 'ExprMatch ~ 'ExprH               // Update: Variable assignation
+                | 'VarId ~ EQSIGN() ~ 'ExprMatch ~ 'ExprH               // Update: Variable assignation
                 | VAL() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ 'Sequence,   // Already defined
     
     'ExprVarH ::= epsilon()                                             // Update: Variable definition

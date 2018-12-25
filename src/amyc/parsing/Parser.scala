@@ -76,14 +76,14 @@ object Parser extends Pipeline[Stream[Token], Program] {
     'QNameModule ::=  epsilon() | DOT() ~ 'Id, 
 
     'Expr ::= 'ExprMatch ~ 'ExprH 
-            | 'ExprVar,
+            | 'ExprVar,                       
       
-    'ExprVar ::=  VAR() ~ 'Param ~ 'ExprVarH ~ 'Sequence                            // Variable definition Update
-                | 'VarId ~ EQSIGN() ~ 'ExprMatch ~ 'ExprH                        // Variable assignation Update
-                | VAL() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ 'Sequence, 
-      
-    'ExprVarH ::= epsilon()                                                         // Variable definition Update
-                | EQSIGN() ~ 'ExprMatch,                                            // Variable initialization Update
+    'ExprVar ::=  VAR() ~ 'Param ~ 'ExprVarH ~ 'Sequence                // Update: Variable definition and initialization 
+                | 'Id ~ EQSIGN() ~ 'ExprMatch ~ 'ExprH               // Update: Variable assignation
+                | VAL() ~ 'Param ~ EQSIGN() ~ 'ExprMatch ~ 'Sequence,   // Already defined
+    
+    'ExprVarH ::= epsilon()                                             // Update: Variable definition
+                | EQSIGN() ~ 'ExprMatch,                                // Update: Variable initialization
             
     'ExprH ::= epsilon() 
             | 'Sequence, 

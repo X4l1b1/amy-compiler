@@ -1,8 +1,44 @@
 [0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
+[0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestWhileLoop[0m started[0m
+[0m[[0m[31merror[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[31mtestWhileLoop[0m failed: scala.[31mMatchError[0m: an instance of class amyc.ast.TreeModule$While, took 0.043 sec[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.ast.Printer.rec$1(Printer.scala:153)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.ast.Printer.$anonfun$apply$2(Printer.scala:30)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.collection.immutable.List.map(List.scala:283)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.ast.Printer.rec$1(Printer.scala:30)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.ast.Printer.$anonfun$apply$1(Printer.scala:24)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.collection.immutable.List.map(List.scala:283)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.ast.Printer.rec$1(Printer.scala:24)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.ast.Printer.apply(Printer.scala:164)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.ast.Printer.apply$(Printer.scala:17)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.ast.NominalPrinter$.apply(Printer.scala:168)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.MainHelpers$$anon$2.run(Main.scala:61)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.MainHelpers$$anon$2.run(Main.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.utils.Pipeline$$anon$1.run(Pipeline.scala:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.runPipeline(CompilerTest.scala:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.$anonfun$runPipelineRedirected$1(CompilerTest.scala:21)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withIn(Console.scala:226)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.$anonfun$testWithRedirectedIO$2(TestUtils.scala:18)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withErr(Console.scala:192)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.$anonfun$testWithRedirectedIO$1(TestUtils.scala:17)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.util.DynamicVariable.withValue(DynamicVariable.scala:58)[0m
+[0m[[0m[31merror[0m] [0m[0m    at scala.Console$.withOut(Console.scala:163)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.testWithRedirectedIO(TestUtils.scala:16)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestUtils.testWithRedirectedIO$(TestUtils.scala:11)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.testWithRedirectedIO(CompilerTest.scala:8)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.runPipelineRedirected(CompilerTest.scala:21)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.CompilerTest.demandPass(CompilerTest.scala:69)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestSuite.shouldPass(TestSuite.scala:46)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestSuite.shouldPass(TestSuite.scala:50)[0m
+[0m[[0m[31merror[0m] [0m[0m    at amyc.test.ParserTests.testWhileLoop([35mParserTests.scala[0m:[33m15[0m)[0m
+[0m[[0m[31merror[0m] [0m[0m    ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestWhileLoop[0m finished, took 0.048 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmpty[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmpty[0m finished, took 0.052 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmpty[0m finished, took 0.027 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmptyFile[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmptyFile[0m finished, took 0.04 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestEmptyFile[0m finished, took 0.019 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestLiterals[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestLiterals[0m finished, took 0.064 sec[0m
-[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 3 total, 0.158s[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mParserTests[0m.[36mtestLiterals[0m finished, took 0.021 sec[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[31m1 failed[0m[34m, [0m[34m0 ignored[0m[34m, 4 total, 0.116s[0m[0m

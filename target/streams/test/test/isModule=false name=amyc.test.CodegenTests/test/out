@@ -1,6 +1,6 @@
 [0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestEmptyObject[0m started[0m
-[0m[[0m[31merror[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[31mtestEmptyObject[0m failed: java.lang.[31mRuntimeException[0m: No exit code: process destroyed., took 0.144 sec[0m
+[0m[[0m[31merror[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[31mtestEmptyObject[0m failed: java.lang.[31mRuntimeException[0m: No exit code: process destroyed., took 0.049 sec[0m
 [0m[[0m[31merror[0m] [0m[0m    at scala.sys.package$.error(package.scala:27)[0m
 [0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessImpl$CompoundProcess.$anonfun$exitValue$1(ProcessImpl.scala:89)[0m
 [0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessImpl$CompoundProcess.exitValue(ProcessImpl.scala:89)[0m
@@ -32,9 +32,9 @@
 [0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestSuite.shouldOutput(TestSuite.scala:30)[0m
 [0m[[0m[31merror[0m] [0m[0m    at amyc.test.ExecutionTests.testEmptyObject(ExecutionTests.scala:11)[0m
 [0m[[0m[31merror[0m] [0m[0m    ...[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestEmptyObject[0m finished, took 0.154 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestEmptyObject[0m finished, took 0.055 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestMinimalError[0m started[0m
-[0m[[0m[31merror[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[31mtestMinimalError[0m failed: java.lang.[31mRuntimeException[0m: No exit code: process destroyed., took 0.081 sec[0m
+[0m[[0m[31merror[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[31mtestMinimalError[0m failed: java.lang.[31mRuntimeException[0m: No exit code: process destroyed., took 0.038 sec[0m
 [0m[[0m[31merror[0m] [0m[0m    at scala.sys.package$.error(package.scala:27)[0m
 [0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessImpl$CompoundProcess.$anonfun$exitValue$1(ProcessImpl.scala:89)[0m
 [0m[[0m[31merror[0m] [0m[0m    at scala.sys.process.ProcessImpl$CompoundProcess.exitValue(ProcessImpl.scala:89)[0m
@@ -66,5 +66,5 @@
 [0m[[0m[31merror[0m] [0m[0m    at amyc.test.TestSuite.shouldFail(TestSuite.scala:42)[0m
 [0m[[0m[31merror[0m] [0m[0m    at amyc.test.ExecutionTests.testMinimalError(ExecutionTests.scala:13)[0m
 [0m[[0m[31merror[0m] [0m[0m    ...[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestMinimalError[0m finished, took 0.091 sec[0m
-[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[31m2 failed[0m[34m, [0m[34m0 ignored[0m[34m, 2 total, 0.263s[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestMinimalError[0m finished, took 0.044 sec[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[31m2 failed[0m[34m, [0m[34m0 ignored[0m[34m, 2 total, 0.107s[0m[0m

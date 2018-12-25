@@ -17,3 +17,5 @@ test
 run library/Std.scala examples/Factorial.scala
 git status
 run library/Std.scala examples/Factorial.scala
+test
+run library/Std.scala examples/Factorial.scala

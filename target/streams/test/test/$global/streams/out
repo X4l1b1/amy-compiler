@@ -1,15 +1,15 @@
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.TyperTests, com.novocode.junit.JUnitFingerprint@489e4d13, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.LexerTests, com.novocode.junit.JUnitFingerprint@489e4d13, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.ParserTests, com.novocode.junit.JUnitFingerprint@489e4d13, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.CodegenTests, com.novocode.junit.JUnitFingerprint@489e4d13, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.NameAnalyzerTests, com.novocode.junit.JUnitFingerprint@489e4d13, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.TyperTests, com.novocode.junit.JUnitFingerprint@23f09bfa, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.LexerTests, com.novocode.junit.JUnitFingerprint@23f09bfa, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.ParserTests, com.novocode.junit.JUnitFingerprint@23f09bfa, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.CodegenTests, com.novocode.junit.JUnitFingerprint@23f09bfa, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.NameAnalyzerTests, com.novocode.junit.JUnitFingerprint@23f09bfa, false, [SuiteSelector])[0m
 [0m[[0m[0mdebug[0m] [0m[0mSummary for JUnit not available.[0m
-[0m[[0m[31merror[0m] [0m[0mFailed: Total 11, Failed 2, Errors 0, Passed 9[0m
+[0m[[0m[31merror[0m] [0m[0mFailed: Total 14, Failed 3, Errors 0, Passed 11[0m
 [0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	amyc.test.TyperTests[0m
 [0m[[0m[0mdebug[0m] [0m[0m	amyc.test.LexerTests[0m
-[0m[[0m[0mdebug[0m] [0m[0m	amyc.test.ParserTests[0m
 [0m[[0m[0mdebug[0m] [0m[0m	amyc.test.NameAnalyzerTests[0m
 [0m[[0m[31merror[0m] [0m[0mFailed tests:[0m
+[0m[[0m[31merror[0m] [0m[0m	amyc.test.ParserTests[0m
 [0m[[0m[31merror[0m] [0m[0m	amyc.test.CodegenTests[0m
 [0m[[0m[31merror[0m] [0m[0m(test:[31mtest[0m) sbt.TestsFailedException: Tests unsuccessful[0m

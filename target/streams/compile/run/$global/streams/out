@@ -5,8 +5,11 @@
 [0m[[0m[0mdebug[0m] [0m[0m	/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/lib/grammarcomparison_2.12-0.1.jar[0m
 [0m[[0m[0mdebug[0m] [0m[0m	/Users/francoisquellec/.sbt/boot/scala-2.12.3/lib/scala-library.jar[0m
 [0m[[0m[0mdebug[0m] [0m[0m	/Users/francoisquellec/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.12/bundles/scala-parser-combinators_2.12-1.1.1.jar[0m
-[0m[[0m[0mdebug[0m] [0m[0mWaiting for thread run-main-29 to terminate.[0m
-[0m[[0m[0mdebug[0m] [0m[0m	Thread run-main-29 exited.[0m
+[0m[[0m[0mdebug[0m] [0m[0mWaiting for thread run-main-2c to terminate.[0m
+[0m[[0m[0mdebug[0m] [0m[0mInterrupting thread run-main-2c[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Interrupted run-main-2c[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Thread run-main-2c exited.[0m
 [0m[[0m[0mdebug[0m] [0m[0mInterrupting remaining threads (should be all daemons).[0m
 [0m[[0m[0mdebug[0m] [0m[0mSandboxed run complete..[0m
-[0m[[0m[0mdebug[0m] [0m[0mExited with code 0[0m
+[0m[[0m[31merror[0m] [0m[0mjava.lang.RuntimeException: Nonzero exit code: 1[0m
+[0m[[0m[31merror[0m] [0m[0m	at sbt.Run$.executeTrapExit(Run.scala:120)[0m

@@ -11,6 +11,8 @@ class LexerTests extends TestSuite {
   val outputExt = "txt"
 
   @Test def testKeywords = shouldOutput("Keywords")
+  @Test def testWhileLoop = shouldOutput("WhileLoop")
+  @Test def testVariable = shouldOutput("Variable")
 
   @Test def testSingleAmp = shouldFail("SingleAmp")
 

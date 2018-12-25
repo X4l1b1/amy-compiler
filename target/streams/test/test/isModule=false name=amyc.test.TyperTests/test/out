@@ -1,10 +1,10 @@
 [0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestArithmetic[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestArithmetic[0m finished, took 0.192 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestArithmetic[0m finished, took 0.115 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestVarError[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestVarError[0m finished, took 0.055 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestVarError[0m finished, took 0.039 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestArithError1[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestArithError1[0m finished, took 0.052 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestArithError1[0m finished, took 0.032 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestVarUpdate[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestVarUpdate[0m finished, took 0.056 sec[0m
-[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 4 total, 0.425s[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mTyperTests[0m.[36mtestVarUpdate[0m finished, took 0.033 sec[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 4 total, 0.253s[0m[0m

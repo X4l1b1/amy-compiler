@@ -1,6 +1,6 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/parsing/ASTConstructorLL1.scala:46:114: constructor cannot be instantiated to expected type;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : grammarcomp.parsing.Leaf[T][0m
-[0m[[0m[31merror[0m] [0m[0m required: List[Any][0m
-[0m[[0m[31merror[0m] [0m[0m      case Node('ExprVar ::= List('VarId, _, _, _), List(id, _, expr, Node('ExprH ::= _, List(Node('Sequence ::= Leaf(sTok), List(_, exp)))))) =>       // Variable assignation Update[0m
-[0m[[0m[31merror[0m] [0m[0m                                                                                                                 ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/src/amyc/ast/Printer.scala:139:15: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Printer.this.treeModule.Name[0m
+[0m[[0m[31merror[0m] [0m[0m required: Printer.this.treeModule.Tree[0m
+[0m[[0m[31merror[0m] [0m[0m          rec(df) <:> " =",[0m
+[0m[[0m[31merror[0m] [0m[0m              ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m

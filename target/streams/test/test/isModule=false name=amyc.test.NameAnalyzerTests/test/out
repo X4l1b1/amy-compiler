@@ -1,6 +1,6 @@
 [0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestArgumentNumberFunction[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestArgumentNumberFunction[0m finished, took 0.029 sec[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestArgumentNumberFunction[0m finished, took 0.03 sec[0m
 [0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestParamAndLocal[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestParamAndLocal[0m finished, took 0.024 sec[0m
-[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 2 total, 0.054s[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mNameAnalyzerTests[0m.[36mtestParamAndLocal[0m finished, took 0.026 sec[0m
+[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 2 total, 0.058s[0m[0m

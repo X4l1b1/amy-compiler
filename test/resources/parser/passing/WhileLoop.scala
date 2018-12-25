@@ -1,6 +1,7 @@
 object WhileLoop {
+	var a: Int = 0;
     while(false){
-    	1 + 1
+    	a = a + 1
     }
 }
 

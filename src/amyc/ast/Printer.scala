@@ -117,6 +117,44 @@ trait Printer {
         } else {
           main
         }
+    
+      case Var(df, value, body) =>
+        val main = Stacked(
+          "var " <:> rec(df) <:> " =",
+          Indented(rec(value)) <:> ";",
+          rec(body, false) // For demonstration purposes, the scope or df is indented
+        )
+        if (parens) {
+          Stacked(
+            "(",
+            Indented(main),
+            ")"
+          )
+        } else {
+          main
+        }
+        
+      case Assign(df, value) => 
+        val main = Stacked(
+          df <:> " =",
+          Indented(rec(value)),
+        )
+        if (parens) {
+          Stacked(
+            "(",
+            Indented(main),
+            ")"
+          )
+        } else {
+          main
+        }
+        
+      case While(cond, body) =>
+        Stacked(
+          "(While(" <:> rec(cond) <:> ") {",
+          Indented(rec(body)),
+          "})"
+        )
       case Ite(cond, thenn, elze) =>
         Stacked(
           "(if(" <:> rec(cond) <:> ") {",

@@ -1,0 +1,11 @@
+\textsl{Amy} is a simple purely functional language that could be described as a more basic version of \textsl{Scala}. In its current version, there can be only final \texttt{val} variables but new classes and interfaces can be defined. The only \textit{control-flow} operations are \texttt{if-then-else} and \texttt{match-case} conditional statements, along with \textit{functions} definitions.
+
+Thus, this language allows only for plain functional program structure, which this project aims to alleviate in some way by adding two \textit{imperative} features : \textit{mutable} variables \texttt{var} and \texttt{while} conditional statements.
+
+Up until this last phase, our work along the semester was to implement each step carried out by the \texttt{Amy-compiler} in order to transform a source file, into a runnable \textit{WebAssembly} byte-code (or a list of error), i.e \textsl{lexical analysis/parsing}, \textsl{type and name analysis} and \textsl{translation}.
+
+The lexical analysis starts by \textit{parsing} the input file into a list of recognized \texttt{Tokens}. This list is then scanned to construct the corresponding \textit{Abstract Syntax Tree} using the grammar rules defined in the \texttt{Parser}, and the \texttt{AST} constructors. Note that the grammar had to be modified in order to make it \textsl{LL(1)}, which guarantees linear parsing time.
+
+For the next step, name and type analysis, we had to transform the previously defined tree into a \texttt{Symbolic Tree} by associating every variable, function and class name to a unique \texttt{ID} - note that this step is also responsible for checking for naming consistency. We then had to implement the \texttt{TypeChecker}, which would read through this tree and generate a list of typing (e.g. function return type and variable type)   \texttt{Constraints} [expected, actual]. This list is then skimmed and any inconsistency generates an error.
+
+Finally, the \texttt{Symbolic Tree} previously computed is read through to generate a sequence of \texttt{WebAssembly} instructions. The use of the tables for the various stored aliases is translated into exchange with the memory stack. The stack then contains references to variables, function and class constructors definitions.

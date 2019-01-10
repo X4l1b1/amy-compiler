@@ -1,0 +1,17 @@
+Those features could be extended by other \textit{flow-control} instructions such as \texttt{for-each} loops without having much to change to the version updated in this report, although the advantages of such features would be debatable. The same could be said for implementing unary operators "++" and "- -" for mutable variables.\\
+
+What would on the other hand make the language much more convenient would be to implement type inference on mutable variables \texttt{var} along with mutable types, to allow expression of the form 
+\begin{lstlisting}
+var i = 1;         
+i = 'a';          
+i = Map(1 -> 'c') 
+\end{lstlisting}
+But would reject the following :
+\begin{lstlisting}
+var i = 0;
+i = 'abc';
+i = i + 1; // Type Error
+i = i ++ 'defg'; // Ok
+\end{lstlisting}
+
+This feature would raise questions about the scope of such modifications and would require to further modify all the work done in this last phase to allow more modification in the variable tables. This seems, however, like a great addition to the language.

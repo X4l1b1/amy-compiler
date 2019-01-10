@@ -1,0 +1,157 @@
+This section initially introduces the theoretical concept involved in the conception of the imperative feature. Then it describes more or less thoroughly each step of their implementation.
+
+\subsection{Theoretical Background\cite{cours}}
+As mentioned in the first section, the process of compiling an \textsl{Amy} source file into a \texttt{WebAssembly} byte-code requires a thorough analysis of the program syntax and logic. This analysis relies on a formal description of the  language, composed of \texttt{Tokens} and \texttt{Rules} declaration to parse and try to represent the program as a \texttt{tree} structure, both helpful in representing the static architectural aspect of the program and its process flow.
+ 
+ From this theoretical point of view, only the addition of the mutable variable \texttt{var} requires non-trivial modifications to the current version of the compiler. The \texttt{while} instruction would of course need its own new token, new rule and constructor but can then be described and analyzed the same way an \texttt{Ite} instruction would be. \\
+ 
+ The introduction of mutable variables on the other hand brings up the issue of variables scope and type. Variables initially implies a single \texttt{Id}-\texttt{Type}-\texttt{Value} description, to then only be reference by the \texttt{Id} parameter. Upon such a declaration, those 3 values would be stored in a table that would be used for different things :
+ \begin{itemize}
+     \item[-] check that subsequent declarations do not use the same \texttt{Id} value (name)
+     \item[-] check that following reference to \texttt{Id} would be in the right context (type)
+     \item[-] provide the \texttt{Value} for computing purposes
+ \end{itemize}
+
+\small\textit{\underline{Note} : depending on the context of such variable declaration (main, functions, match-cases, ..) global and local tables are used, much like the \texttt{symbolic tree} representing the program.}
+\normalsize \\
+
+This implementation, as is, does not allow for any modification of an existing entry in those tables, hence, in order to implement mutable variables, one could do either of the following :
+\begin{itemize}
+    \item[-] define and construct separate tables whose operations would allow modification of existing entries while providing the information necessary to ensure the correctness of such an operation $\rightarrow$ same structure than existing tables
+    \item[-] add an underlying parameter to the entries in the existing table that would indicate whether this variable should be modified or not, and therefore modify the tables usages everywhere.
+\end{itemize}
+
+Either way, in order to implement the \texttt{var} feature, the \texttt{Name Analyzer} must be provided ways of knowing whether a variable is mutable, along with its type. The \texttt{Type Checker} remains unchanged as the type cannot be modified. Finally, the \texttt{Code Generator} and its underlying data structure must provide a way to override the values of certain variables in their tables.
+
+\subsection{Implementation Details}
+
+To follow the development steps, this section will start by introducing the \texttt{variable} implementation to then detail the implementation of the \texttt{while} instruction.
+
+\subsubsection{Variables - \texttt{VAR}}
+
+As detailed in \textbf{Section 3.1}, this new feature can be defined using wide inspiration from the already defined \texttt{val} keyword and its usage throughout the compiler's different steps. This practical observation presents although its limitation and some modification were necessary to maintain the grammar's properties whilst correctly inserting these new elements. The declarations of \texttt{var} and \texttt{val} partly shares indeed the same structure but differ in the fact that a \texttt{var} might not be initialized at its declaration, as it can be later. Finally, it was necessary to introduce in the grammar the possibility of re-assigning values to \texttt{var} entities. The modified parts of the existing grammar for this matter are as follow :
+\begin{lstlisting}
+'Expr ::= 'ExprMatch ~ 'ExprH 
+            | 'ExprVar,                       
+      
+'ExprVar ::=  VAL() ~ 'Param ~ 'Assign ~ 'Sequence
+            | VAR() ~ 'Param ~ 'ExprVarH ~ 'Sequence
+            | 'VarId ~ 'Assign ~ 'ExprH,
+    
+'ExprVarH ::= epsilon()
+            | 'Assign,
+            
+'Assign ::=  EQSIGN() ~ 'ExprMatch,
+            
+'ExprH ::= epsilon() 
+            | 'Sequence, 
+'VarId ::= IDVARSENT
+'Sequence ::= SEMICOLON() ~ 'Expr,                                        
+\end{lstlisting}
+Using this grammar, the \textit{Parser} can correctly interpret both declaration types of \texttt{var} and its re-assignment but, in order to avoid parsing ambiguity - which will be further discussed in the next paragraph - it was deemed necessary to define new \textit{Tokens}. This necessity comes from the fact that the \textit{Analyzer} will need to be able to differentiate \textit{Id} usage among functions, \texttt{val} and \texttt{var} expressions. Those new \textit{Tokens} are defined as follow :
+\begin{lstlisting}
+case class VAR()      extends Token
+case class ASSIGN(value: String) extends Token
+                                with TerminalClass
+val IDVARSENT =  ASSIGN("")
+\end{lstlisting}
+The first \textit{Token} is rather obvious and comes from the necessity to define a token for the \texttt{var} keyword. The other two, less obvious, come from the fact that, as stated previously, an \textit{Id} that corresponds to a \texttt{var} needs to be able to be (re)assigned. Yet, so far, expressions using \textit{Id}s could correspond to \texttt{val} and function declarations or references. The need for a new usage for \textit{Id}s (assignment) hence implied the need of a new \textit{Token} to represent those \textit{Id}s, that would be different from the existing one.
+
+Without this early differentiation in the \textit{Id} definitions, one key property of the grammar would be violated as \textit{'Expr} would have two derivation trees using an \textit{'Id} (function/variable call and variable assignation), i.e. 
+\begin{equation*}
+    First('Expr) \cap First('Expr) = {ID()} \not= \emptyset
+\end{equation*}
+and would result in it not being \textit{LL(1)} anymore. Hence, separating from the start \textit{Id}s that can be assigned and \textit{Id}s that can only be referenced following their definition removes the ambiguity and preserves our grammar's properties.
+
+Then, in the \textit{Lexer}, it was necessary to look ahead for the following characters of the expression, after recognizing an \textit{Id} to determine whether it is one followed by an assignment (\textit{ASSIGN} token), or a simple reference (\textit{ID} token). In that purpose, it was decided to check the following: 
+\begin{equation}
+    nextChar \not= "="
+\end{equation}
+\begin{equation}
+    secondNextChar == "="
+\end{equation}
+\begin{equation}
+    secondNextChar == ">"
+\end{equation}
+\begin{equation}
+   secondNextChar == "\{"
+\end{equation}
+If one of the 1-4 equations is true, then it is an \textit{ID} token, otherwise it's an \textit{ASSIGN}.
+
+Using those new elements, the compiler is now able to always correctly recognize references to variables that are destined to an assignment, and those that are mere references, thus closing the \textit{parsing} chapter of the modifications for this feature. The compiler now needs a way to ensure that re-assignment to \texttt{val} should not be allowed, and should be for \texttt{var}. 
+
+The answer to this issue first resides in the \textit{AST} construction. In order for the \textit{Analyzer} to be able to determine whether an assignment is correct or not, a new field has been added to the \textit{Identifier} object, \textit{ASSIGNABLE} - false by default- and an overridden version of the \textit{fresh} method, as follow:
+\begin{lstlisting}
+val ASSIGNABLE = true
+
+def fresh(name: String, assignable: Boolean): Identifier
+                = new Identifier(name, assignable)
+def fresh(name: String): Identifier 
+                = new Identifier(name, !ASSIGNABLE)
+\end{lstlisting}
+This structured is used in order to minimize to modifications to the existing compiler : previously defined calls to \textit{fresh} will remain unchanged and have the effect of defining a non-assignable (i.e. immutable) \textit{Id}. On the other hand, it is now possible to specify whether a new \textit{Id} should be. Thus, the \textit{NameAnalyzer} now specifies, upon translating an expression from a nominal program into a symbolic one, specifies that an expression of type \texttt{N.Var} initiate the creation of a symbolic \textit{Id} using the \textit{fresh} method as follow :
+\begin{lstlisting}
+val idName = Identifier.fresh(df.name, 
+                            Identifier.ASSIGNABLE)
+\end{lstlisting}
+Upon translating an expression of type \textit{N.Assign}, it ensures that (beyond verifying that the \textit{Id} is defined) the \textit{Id} is indeed assignable as follow :
+\begin{lstlisting}
+val nameS = locals.get(name)
+                   .getOrElse(params.get(name)
+                   .getOrElse(fatal(s"Undefined variable name")))
+if(nameS.assignable != Identifier.ASSIGNABLE)
+    fatal(s"Variable name is not assignable")
+\end{lstlisting}
+
+The \textit{Analyzer} is now able to determine the legality of a variable assignment, it only further requires to ensure that a \texttt{var} is initialized before it is referenced (\texttt{read-before-write} error). Considering a proper check of such situation would require the implementation of a new and unknown part of the compiler, the \textit{Data-Flow Analyzer}, it has been decided that all \texttt{var} variable should have a default value, if not set at their declaration (e.g. 0 for \texttt{Int}, \textit{false} for \texttt{Boolean} and \textit{""} for \texttt{String}). This "short-cut" solution remains correct and is very efficient in ensuring that no uninitialized variable can be read.
+
+Finally, once all those issues had found a resolution, the \textit{Code Generation} for all the parts of the \texttt{var} usage went rather smoothly and the result was what was anticipated.
+
+\subsubsection{While Instruction}
+
+Compared to the first part of this feature extension, the implementation of the \texttt{while} instruction was quite straightforward. It was decided that its global behavior should follow the \texttt{if-then-else} structure, i.e. using a \texttt{boolean} for \textit{condition} but more importantly, having a \textit{body} of \texttt{Unit} type. This second choice, comes from the fact such type of instructions have for sole purpose to modify the \textit{process-flow} of the program and no correct or intuitive usage would require its body to return anything. 
+
+Hence, the implementation, although it required only to add the necessary parts to the \textit{Lexer}, the \textit{Parser}, the \textit{ASTConstructor}, the \textit{NameAnalyzer}, the \textit{TypeChecker} and the \textit{CodeGenerator}, was quite intuitive and followed the anticipated path.
+
+One notable part of those additions though was the code generation : if there was analogous instructions in \textit{WebAssembly} for the \texttt{if-then-else} instruction, it was not the case for the \texttt{while}. Fortunately, the latter can be constructed using the first - and a branch instructions. Using the idea that a \texttt{while} instruction is nothing else than an \texttt{if-then-else} whose \texttt{then} body loops back to the condition and \texttt{else} body simply is the continuation of the program. The translation of this instruction and its impact on the \textit{WebAssembly} resulting code can be described as follow
+\begin{lstlisting}
+    val loop_start = getFreshLabel()
+    val loop_end = getFreshLabel()
+    Block(loop_end) <:> // BLOCK WHILE
+        Loop(loop_start) <:> // LOOP BODY OF WHILE
+            cgExpr(cond) <:> If_void <:> // if condition
+                cgExpr(body) <:> // execute body
+                Br(loop_start) <:> // jump to loop_start
+            Else <:> 
+                Br(loop_end) <:> // jump end of loop_end
+            End <:>
+        End <:> // END LOOP BODY OF WHILE
+    End <:> Const(1) // END BLOCK WHILE
+\end{lstlisting}
+
+\subsubsection{Tests implementation}
+
+In order to ensure that the added features did not break the existing version of the compiler, and respected the provided specifications, it was decided to implement a series of tests. Those were added to the existing \texttt{/test} folder in the directories that were deemed pertinent and, although some were there to merely check that the parsing was done correctly, some were implemented to ensure that the features had the expected behavior and raised the correct errors when needed. Although it was possible to check automatically the latter, the resulting behavior of a correct use of the new features was done by compiling the two files presented below, running them both using \texttt{nodejs} and verify that the printed values on the terminal corresponded to what was expected.
+
+Note that the syntax correctness checks (i.e. that one cannot assign new values to \texttt{val}, assign values of a different type to \texttt{var}, the return type of \texttt{while} is \textit{Unit()} and the default value of each primitive type is correct) were done by writing erroneous expressions in test files  that were specified as expected to fail in the Scala test suite.
+\begin{lstlisting}
+object Variable {
+	var i: Int;
+	var j: Int = 0;
+	i = j;
+	j = i + 1;    }
+\end{lstlisting}
+\begin{lstlisting}
+object WhileLoop {
+	def fact(n: Int): Int = {
+		var res: Int = 1;
+		var j: Int = n;
+		while(1 < j) {
+			res = res * j;
+			j = j - 1
+		};
+		res
+	}
+}
+\end{lstlisting}
+ 

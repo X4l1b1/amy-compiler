@@ -1,0 +1,38 @@
+The following example describe two implementations of the same \texttt{Factorial} function in \textsl{Amy}. Although both examples require similar amount of code, it will be explained how both lead to different results and how their respective process flow is impacted.
+
+\begin{lstlisting}
+/* Implementation using previously defined features */
+object Factorial {
+  def fact(i: Int) : Int = { 
+    if(i < 2) { 1 }
+    else {
+        i * fact(i - 1)
+    }
+  }
+}
+\end{lstlisting}
+This rather simple function compute the factorial value of a given \texttt{Integer}. This function presents a recursive structure and will call itself as many times as required before the last call returns the value \texttt{1} and make all the other calls return like a waterfall. Each iteration, except the last one, is composed of 1 comparison, 1 subtraction, 1 multiplication and 1 function call.
+\newpage
+\begin{lstlisting}
+/* Implementation using imperative features */
+object Factorial {
+  def fact(i: Int) : Int = { 
+    var fact: Int = 1;  // Declaration
+    var index: Int = 2;
+    while(index <= i){
+        fact = fact*index; // Reassignment
+        index = index + 1
+    }
+    fact    
+  } 
+}
+\end{lstlisting}
+In this implementation, the \texttt{var} keyword is used to define two mutable \texttt{Integer} variables with initial values \texttt{1} and \texttt{2} respectively. Then the variable \textsl{index} is compared to the function's argument to express the current state of the function's processing. If \texttt{true}, the processing requires at least another step : the \texttt{fact} variable is updated and the \texttt{index} is incremented, the condition (\texttt{index <= i}) is then evaluated again. When \texttt{false}, the function goes to the next line after the \texttt{while} instruction's body and return the current value of \texttt{fact}.
+This implementation, as opposed to the first one, requires a single call to the function \textsl{fact} but requires the same number of steps, each including 1 comparison, 1 addition and 1 multiplication. \\
+
+The mutable variables are declared in a similar way the immutable ones are, using only the keyword \texttt{var} instead. On the other hand, in the reassignment of those variables, a whole new usage of the "=" (\texttt{EQUALS} token) delimiter is made, it is used as an operator.
+
+The condition provided after the \texttt{while} instruction is evaluated first, if it is \textsl{true}, then the associated block is executed and an unconditional branch leads back to the condition for another evaluation, otherwise, the program jumps directly to the line following the aforementioned block.\\
+
+
+From those examples, both aspects of those implementations can be directly compared : in terms of algorithmic complexity, both require more or less the same amount of similar operations but in a more concrete perspective on the compiled result, we see that the second implementation, using imperative features, requires only 1 call to \textsl{fact} and only 2 variable assignments regardless of the argument's value. However, the first example, purely functional, requires a linear amount of call to \textsl{fact} with respect to the value of \texttt{i}.

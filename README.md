@@ -1,6 +1,6 @@
 ### Amy-Compiler
 
-Final phase of the _Amy-Compiler_ project in the scope of **Computer Language Processing** which consisted of extending the compiler to include _while_ loops and mutable variables.
+Final phase of the _Amy-Compiler_ project in the scope of the course **Computer Language Processing** from _V. Kunčak_ at EPFL which consisted of extending the compiler to include _while_ loops and mutable variables.
 
 ### Examples
 

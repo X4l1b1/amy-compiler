@@ -259,25 +259,240 @@
     end
   )
 
-  (func $Factorial_fact (param i32) (result i32) (local i32)
-    get_local 0
+  (func $Factorial_Imperative_fact (param i32) (result i32) (local i32 i32)
+    i32.const 1
+    set_local 1
     i32.const 2
-    i32.lt_s
-    if (result i32)
-      i32.const 1
-    else
-      get_local 0
-      i32.const 1
-      i32.sub
-      call $Factorial_fact
-      set_local 1
-      get_local 0
-      get_local 1
-      i32.mul
+    set_local 2
+    block $label_4
+      loop $label_3
+        get_local 2
+        get_local 0
+        i32.le_s
+        if
+          get_local 1
+          get_local 2
+          i32.mul
+          set_local 1
+          get_local 1
+          drop
+          get_local 2
+          i32.const 1
+          i32.add
+          set_local 2
+          get_local 2
+          drop
+          get_global 0
+          i32.const 0
+          i32.add
+          i32.const 99
+          i32.store8
+          get_global 0
+          i32.const 1
+          i32.add
+          i32.const 117
+          i32.store8
+          get_global 0
+          i32.const 2
+          i32.add
+          i32.const 114
+          i32.store8
+          get_global 0
+          i32.const 3
+          i32.add
+          i32.const 114
+          i32.store8
+          get_global 0
+          i32.const 4
+          i32.add
+          i32.const 101
+          i32.store8
+          get_global 0
+          i32.const 5
+          i32.add
+          i32.const 110
+          i32.store8
+          get_global 0
+          i32.const 6
+          i32.add
+          i32.const 116
+          i32.store8
+          get_global 0
+          i32.const 7
+          i32.add
+          i32.const 95
+          i32.store8
+          get_global 0
+          i32.const 8
+          i32.add
+          i32.const 102
+          i32.store8
+          get_global 0
+          i32.const 9
+          i32.add
+          i32.const 97
+          i32.store8
+          get_global 0
+          i32.const 10
+          i32.add
+          i32.const 99
+          i32.store8
+          get_global 0
+          i32.const 11
+          i32.add
+          i32.const 116
+          i32.store8
+          get_global 0
+          i32.const 12
+          i32.add
+          i32.const 32
+          i32.store8
+          get_global 0
+          i32.const 13
+          i32.add
+          i32.const 61
+          i32.store8
+          get_global 0
+          i32.const 14
+          i32.add
+          i32.const 32
+          i32.store8
+          get_global 0
+          i32.const 15
+          i32.add
+          i32.const 0
+          i32.store8
+          get_global 0
+          get_global 0
+          i32.const 16
+          i32.add
+          set_global 0
+          get_local 1
+          call $Std_intToString
+          call $String_concat
+          call $Std_printString
+          drop
+          get_global 0
+          i32.const 0
+          i32.add
+          i32.const 99
+          i32.store8
+          get_global 0
+          i32.const 1
+          i32.add
+          i32.const 117
+          i32.store8
+          get_global 0
+          i32.const 2
+          i32.add
+          i32.const 114
+          i32.store8
+          get_global 0
+          i32.const 3
+          i32.add
+          i32.const 114
+          i32.store8
+          get_global 0
+          i32.const 4
+          i32.add
+          i32.const 101
+          i32.store8
+          get_global 0
+          i32.const 5
+          i32.add
+          i32.const 110
+          i32.store8
+          get_global 0
+          i32.const 6
+          i32.add
+          i32.const 116
+          i32.store8
+          get_global 0
+          i32.const 7
+          i32.add
+          i32.const 95
+          i32.store8
+          get_global 0
+          i32.const 8
+          i32.add
+          i32.const 105
+          i32.store8
+          get_global 0
+          i32.const 9
+          i32.add
+          i32.const 110
+          i32.store8
+          get_global 0
+          i32.const 10
+          i32.add
+          i32.const 100
+          i32.store8
+          get_global 0
+          i32.const 11
+          i32.add
+          i32.const 101
+          i32.store8
+          get_global 0
+          i32.const 12
+          i32.add
+          i32.const 120
+          i32.store8
+          get_global 0
+          i32.const 13
+          i32.add
+          i32.const 32
+          i32.store8
+          get_global 0
+          i32.const 14
+          i32.add
+          i32.const 61
+          i32.store8
+          get_global 0
+          i32.const 15
+          i32.add
+          i32.const 32
+          i32.store8
+          get_global 0
+          i32.const 16
+          i32.add
+          i32.const 0
+          i32.store8
+          get_global 0
+          i32.const 17
+          i32.add
+          i32.const 0
+          i32.store8
+          get_global 0
+          i32.const 18
+          i32.add
+          i32.const 0
+          i32.store8
+          get_global 0
+          i32.const 19
+          i32.add
+          i32.const 0
+          i32.store8
+          get_global 0
+          get_global 0
+          i32.const 20
+          i32.add
+          set_global 0
+          get_local 2
+          call $Std_intToString
+          call $String_concat
+          call $Std_printString
+          br $label_3
+        else
+          br $label_4
+        end
+      end
     end
+    i32.const 1
+    drop
+    get_local 1
   )
-  (export "Factorial_main" (func $Factorial_main))
-  (func $Factorial_main 
+  (export "Factorial_Imperative_main" (func $Factorial_Imperative_main))
+  (func $Factorial_Imperative_main 
     get_global 0
     i32.const 0
     i32.add
@@ -324,7 +539,7 @@
     i32.add
     set_global 0
     i32.const 5
-    call $Factorial_fact
+    call $Factorial_Imperative_fact
     call $Std_intToString
     call $String_concat
     call $Std_printString
@@ -375,7 +590,7 @@
     i32.add
     set_global 0
     i32.const 10
-    call $Factorial_fact
+    call $Factorial_Imperative_fact
     call $Std_intToString
     call $String_concat
     call $Std_printString

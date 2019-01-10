@@ -14,9 +14,12 @@ run library/Std.scala examples/Factorial.scala
 run library/Std.scala examples/Printing.scala
 run library/Std.scala examples/Factorial.scala
 test
-run library/Std.scala examples/Factorial.scala
-git status
-run library/Std.scala examples/Factorial.scala
+compile
 test
+run library/Std.scala
 run library/Std.scala examples/Factorial.scala
-test
+run library/Std.scala examples/Factorial_Imperative.scala
+run library/Std.scala examples/Assignment_Imperative.scala
+run library/Std.scala examples/Factorial_Imperative.scala
+sbt clean
+clean

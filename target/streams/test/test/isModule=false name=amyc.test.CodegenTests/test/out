@@ -1,6 +1,0 @@
-[0m[[0m[0minfo[0m] [0m[0m[34mTest run started[0m[0m
-[0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestEmptyObject[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestEmptyObject[0m finished, took 0.252 sec[0m
-[0m[[0m[0minfo[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestMinimalError[0m started[0m
-[0m[[0m[0mdebug[0m] [0m[0mTest amyc.test.[33mCodegenTests[0m.[36mtestMinimalError[0m finished, took 0.123 sec[0m
-[0m[[0m[0minfo[0m] [0m[0m[34mTest run finished: [0m[34m0 failed[0m[34m, [0m[34m0 ignored[0m[34m, 2 total, 0.388s[0m[0m

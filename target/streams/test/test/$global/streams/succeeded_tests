@@ -1,7 +1,0 @@
-#Successful Tests
-#Tue Dec 25 21:48:44 CET 2018
-amyc.test.CodegenTests=1545770924269
-amyc.test.LexerTests=1545770923676
-amyc.test.ParserTests=1545770923873
-amyc.test.TyperTests=1545770923651
-amyc.test.NameAnalyzerTests=1545770924398

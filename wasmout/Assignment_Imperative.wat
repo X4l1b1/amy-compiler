@@ -258,127 +258,27 @@
       set_global 0
     end
   )
-
-  (func $Factorial_fact (param i32) (result i32) (local i32)
+  (export "Assignment_Imperative_main" (func $Assignment_Imperative_main))
+  (func $Assignment_Imperative_main (local i32 i32)
+    i32.const 0
+    set_local 0
+    i32.const 0
+    set_local 1
+    get_local 1
+    set_local 0
     get_local 0
-    i32.const 2
-    i32.lt_s
-    if (result i32)
-      i32.const 1
-    else
-      get_local 0
-      i32.const 1
-      i32.sub
-      call $Factorial_fact
-      set_local 1
-      get_local 0
-      get_local 1
-      i32.mul
-    end
-  )
-  (export "Factorial_main" (func $Factorial_main))
-  (func $Factorial_main 
-    get_global 0
-    i32.const 0
-    i32.add
-    i32.const 53
-    i32.store8
-    get_global 0
-    i32.const 1
-    i32.add
-    i32.const 33
-    i32.store8
-    get_global 0
-    i32.const 2
-    i32.add
-    i32.const 32
-    i32.store8
-    get_global 0
-    i32.const 3
-    i32.add
-    i32.const 61
-    i32.store8
-    get_global 0
-    i32.const 4
-    i32.add
-    i32.const 32
-    i32.store8
-    get_global 0
-    i32.const 5
-    i32.add
-    i32.const 0
-    i32.store8
-    get_global 0
-    i32.const 6
-    i32.add
-    i32.const 0
-    i32.store8
-    get_global 0
-    i32.const 7
-    i32.add
-    i32.const 0
-    i32.store8
-    get_global 0
-    get_global 0
-    i32.const 8
-    i32.add
-    set_global 0
-    i32.const 5
-    call $Factorial_fact
-    call $Std_intToString
-    call $String_concat
-    call $Std_printString
     drop
-    get_global 0
-    i32.const 0
-    i32.add
-    i32.const 49
-    i32.store8
-    get_global 0
+    get_local 0
     i32.const 1
     i32.add
-    i32.const 48
-    i32.store8
-    get_global 0
-    i32.const 2
-    i32.add
-    i32.const 33
-    i32.store8
-    get_global 0
-    i32.const 3
-    i32.add
-    i32.const 32
-    i32.store8
-    get_global 0
-    i32.const 4
-    i32.add
-    i32.const 61
-    i32.store8
-    get_global 0
-    i32.const 5
-    i32.add
-    i32.const 32
-    i32.store8
-    get_global 0
-    i32.const 6
-    i32.add
-    i32.const 0
-    i32.store8
-    get_global 0
-    i32.const 7
-    i32.add
-    i32.const 0
-    i32.store8
-    get_global 0
-    get_global 0
-    i32.const 8
-    i32.add
-    set_global 0
-    i32.const 10
-    call $Factorial_fact
-    call $Std_intToString
-    call $String_concat
-    call $Std_printString
+    set_local 1
+    get_local 1
+    drop
+    get_local 0
+    call $Std_printInt
+    drop
+    get_local 1
+    call $Std_printInt
     drop
   )
 )

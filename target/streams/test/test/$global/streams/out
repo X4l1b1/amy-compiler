@@ -1,8 +1,8 @@
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.TyperTests, com.novocode.junit.JUnitFingerprint@3991b869, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.LexerTests, com.novocode.junit.JUnitFingerprint@3991b869, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.ParserTests, com.novocode.junit.JUnitFingerprint@3991b869, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.CodegenTests, com.novocode.junit.JUnitFingerprint@3991b869, false, [SuiteSelector])[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.NameAnalyzerTests, com.novocode.junit.JUnitFingerprint@3991b869, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.TyperTests, com.novocode.junit.JUnitFingerprint@728fb750, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.LexerTests, com.novocode.junit.JUnitFingerprint@728fb750, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.ParserTests, com.novocode.junit.JUnitFingerprint@728fb750, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.CodegenTests, com.novocode.junit.JUnitFingerprint@728fb750, false, [SuiteSelector])[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning TaskDef(amyc.test.NameAnalyzerTests, com.novocode.junit.JUnitFingerprint@728fb750, false, [SuiteSelector])[0m
 [0m[[0m[0mdebug[0m] [0m[0mSummary for JUnit not available.[0m
 [0m[[0m[0minfo[0m] [0m[0mPassed: Total 20, Failed 0, Errors 0, Passed 20[0m
 [0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m

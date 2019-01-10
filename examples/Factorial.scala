@@ -1,12 +1,12 @@
 object Factorial {
+  def fact(i: Int): Int = {
+    if (i < 2) { 1 }
+    else { 
+      val rec: Int = fact(i-1);
+      i * rec
+    }
+  }
 
-    Std.printInt(1);
-    var a: Int = 0;
-    Std.printInt(2);
-    while(a < 5){
-        Std.printInt(a);
-        a = a + 1
-    };
-    
-    Std.printInt(0)
+  Std.printString("5! = "  ++ Std.intToString(fact(5)));
+  Std.printString("10! = " ++ Std.intToString(fact(10)))
 }

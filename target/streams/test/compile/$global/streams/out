@@ -1,5 +1,0 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/francoisquellec/Documents/EPFL/Passerelle/Computer Langage processing/Project/amy-compiler/test/scala/amyc/test/LexerTests.scala:15:13: method testKeywords is defined twice;[0m
-[0m[[0m[31merror[0m] [0m[0m  the conflicting method testKeywords was defined at line 14:13[0m
-[0m[[0m[31merror[0m] [0m[0m  @Test def testKeywords = shouldOutput("Variable")[0m
-[0m[[0m[31merror[0m] [0m[0m            ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m

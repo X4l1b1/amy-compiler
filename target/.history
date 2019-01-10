@@ -21,3 +21,5 @@ run library/Std.scala examples/Factorial.scala
 run library/Std.scala examples/Factorial_Imperative.scala
 run library/Std.scala examples/Assignment_Imperative.scala
 run library/Std.scala examples/Factorial_Imperative.scala
+sbt clean
+clean
